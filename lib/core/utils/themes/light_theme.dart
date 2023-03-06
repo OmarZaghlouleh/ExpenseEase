@@ -1,0 +1,132 @@
+import 'package:budgeting_app/core/utils/colors/app_light_colors.dart';
+import 'package:budgeting_app/core/utils/sizes/borders.dart';
+import 'package:budgeting_app/core/utils/sizes/font_sizes.dart';
+import 'package:budgeting_app/core/utils/sizes/space_sizes.dart';
+import 'package:budgeting_app/core/utils/values/app_values.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+ThemeData getLightTheme() => ThemeData(
+      primaryColor: AppLightColors.primaryLightColor,
+      textSelectionTheme:
+          TextSelectionThemeData(cursorColor: AppLightColors.primaryLightColor),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: AppLightColors.primaryLightColor,
+        shape: const StadiumBorder(),
+      ),
+      appBarTheme: AppBarTheme(
+        elevation: AppValues.appbarElevation,
+        backgroundColor: AppLightColors.appBarBackgroundSecondaryColor,
+        iconTheme: const IconThemeData(
+          color: AppLightColors.appBarIconLightColor,
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all(AppLightColors.primaryLightColor),
+          shape: MaterialStateProperty.all(
+            const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  AppSizes.spaceSize10,
+                ),
+              ),
+            ),
+          ),
+          textStyle: MaterialStateProperty.all(
+            GoogleFonts.inconsolata(
+              color: AppLightColors.buttonTextColor,
+              fontSize: FontSizes.buttonFontSize,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        iconColor: AppLightColors.primaryLightColor,
+        prefixIconColor: AppLightColors.primaryLightColor,
+        labelStyle: GoogleFonts.inconsolata(
+          color: AppLightColors.accentColor,
+          fontSize: FontSizes.textFieldLabelFontSize,
+          fontWeight: FontWeight.w500,
+        ),
+        errorStyle: GoogleFonts.inconsolata(
+          color: AppLightColors.errorColor,
+          fontSize: FontSizes.textFieldLabelFontSize,
+          fontWeight: FontWeight.w500,
+        ),
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+        border: const OutlineInputBorder(
+          borderSide: BorderSide(
+            width: BorderSizes.b1,
+            color: AppLightColors.accentColor,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            width: BorderSizes.b1,
+            color: AppLightColors.primaryLightColor,
+          ),
+        ),
+        outlineBorder: BorderSide(
+          width: BorderSizes.b1,
+          color: AppLightColors.primaryLightColor,
+        ),
+        errorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            width: BorderSizes.b1,
+            color: AppLightColors.errorColor,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all(
+            AppLightColors.primaryLightColor,
+          ),
+          textStyle: MaterialStateProperty.all<TextStyle>(
+            GoogleFonts.inconsolata(
+              color: AppLightColors.primaryLightColor,
+              fontSize: FontSizes.buttonFontSize,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
+      textTheme: TextTheme(
+        displayLarge: GoogleFonts.inconsolata(
+          color: AppLightColors.primaryLightColor,
+          fontSize: FontSizes.bigTitleFontSize,
+          fontWeight: FontWeight.w600,
+        ),
+        displayMedium: GoogleFonts.inconsolata(
+          color: AppLightColors.primaryLightColor,
+          fontSize: FontSizes.longFontSize,
+          fontWeight: FontWeight.w600,
+        ),
+        displaySmall: GoogleFonts.inconsolata(
+          color: AppLightColors.accentColor,
+          fontSize: FontSizes.descriptionFontSize,
+          fontWeight: FontWeight.w400,
+        ),
+        bodySmall: GoogleFonts.inconsolata(
+          color: AppLightColors.primaryLightColor,
+          fontSize: FontSizes.bodySmallFontSize,
+          fontWeight: FontWeight.w500,
+        ),
+        bodyMedium: GoogleFonts.inconsolata(
+          color: AppLightColors.buttonTextColor,
+          fontSize: FontSizes.containerBodyFontSize,
+          fontWeight: FontWeight.w600,
+          decoration: TextDecoration.underline,
+        ),
+
+//For TextField Text Style
+        labelMedium: GoogleFonts.inconsolata(
+          color: AppLightColors.accentColor,
+          fontSize: FontSizes.textFieldTextFontSize,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
