@@ -1,2 +1,1 @@
-ExpenseEase is a mobile application to keep tracking your incomes and expenses.
-(Still under development).
+ExpenseEase is a mobile application to keep tracking your incomes and expenses (Still under development).
