@@ -38,6 +38,8 @@ class AppStrings {
   static const String salary = "Salary";
   static const String currency = "Currency";
   static const String changePlanType = "Change plan type";
+  static const String gettingPlanErrorMessage =
+      "Something went wrong while getting data.";
 
   static String getMatchedNameErrorMessage(String name) =>
       "$name already exist";

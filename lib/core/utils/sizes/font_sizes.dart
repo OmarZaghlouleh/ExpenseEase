@@ -8,4 +8,5 @@ class FontSizes {
   static const double containerBodyFontSize = 15.0;
   static const double textFieldLabelFontSize = 15.0;
   static const double textFieldTextFontSize = 18.0;
+  static const double errorDialogTextFontSize = 15.0;
 }

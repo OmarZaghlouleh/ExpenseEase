@@ -1,3 +1,4 @@
+import 'package:budgeting_app/core/utils/sizes/opacity.dart';
 import 'package:flutter/material.dart';
 
 class AppLightColors {
@@ -9,4 +10,7 @@ class AppLightColors {
   static const Color appBarBackgroundSecondaryColor = Colors.transparent;
   static const Color blueColor = Colors.lightBlue;
   static const Color transparent = Colors.transparent;
+  static Color dialogBackgroundColor =
+      Colors.black.withOpacity(AppOpacity.op05);
+  static Color errorDialogTextColor = Colors.white;
 }

@@ -128,5 +128,16 @@ ThemeData getLightTheme() => ThemeData(
           fontSize: FontSizes.textFieldTextFontSize,
           fontWeight: FontWeight.w600,
         ),
+        labelLarge: GoogleFonts.inconsolata(
+          color: AppLightColors.primaryLightColor,
+          fontSize: FontSizes.textFieldTextFontSize,
+          fontWeight: FontWeight.w600,
+        ),
+
+        headlineMedium: GoogleFonts.inconsolata(
+          color: AppLightColors.errorDialogTextColor,
+          fontSize: FontSizes.errorDialogTextFontSize,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     );

@@ -1,4 +1,5 @@
-import 'package:budgeting_app/core/utils/durations/animation_duration.dart';
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
 import 'package:budgeting_app/plans/presentation/components/Create%20plan%20components/sections/plan_details_section.dart';
 import 'package:budgeting_app/plans/presentation/components/Create%20plan%20components/sections/select_plan_type_section.dart';
@@ -18,22 +19,14 @@ class CreatePlanScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: ElevatedButton(
-        onPressed: () {
-          _pageController.nextPage(
-            duration: Duration(milliseconds: AnimationDuration.d300),
-            curve: Curves.linear,
-          );
-          if (_pageController.offset ==
-              _pageController.position.maxScrollExtent) {
-            final result = _formKey.currentState!.validate();
-            if (result == true) {
-              Provider.of<CreatePlanProvider>(context, listen: false)
-                  .createPlan(
-                name: _nameController.text.trim(),
-                salary: _salaryController.text.trim(),
-              );
-            }
-          }
+        onPressed: () async {
+          await Provider.of<CreatePlanProvider>(context, listen: false)
+              .nextFunction(
+                  pageController: _pageController,
+                  formKey: _formKey,
+                  context: context,
+                  nameController: _nameController,
+                  salaryController: _salaryController);
         },
         child: const Text(AppStrings.next),
       ),
