@@ -1,7 +1,4 @@
-enum CurrencyType {
-  dollar,
-  syrianPound,
-}
+enum CurrencyType { dollar, syrianPound, none }
 
 enum PlanType {
   employee,

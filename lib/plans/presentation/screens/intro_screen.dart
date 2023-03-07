@@ -29,19 +29,8 @@ class _IntroScreenState extends State<IntroScreen>
   final PageController _pageController =
       PageController(initialPage: AppValues.v0);
 
-  // late AnimationController _animationController;
-  // late Animation<double> _animation;
-
   @override
   void initState() {
-    // _animationController = AnimationController(
-    //     vsync: this, duration: Duration(milliseconds: AnimationDuration.d500))
-    //   ..repeat();
-    // _animation = Tween<double>(begin: 0, end: 100).animate(_animationController)
-    //   ..addListener(() {
-    //     setState(() {});
-    //   });
-
     Provider.of<IntroProvider>(context, listen: false).reset();
     _pageController.addListener(() {
       if (_pageController.page != null && _pageController.page! % 1 == 0) {
@@ -56,8 +45,6 @@ class _IntroScreenState extends State<IntroScreen>
   void dispose() {
     Future.delayed(Duration.zero).then((_) {});
     _pageController.removeListener(() {});
-    // _animation.removeListener(() {});
-    // _animationController.dispose();
 
     super.dispose();
   }
@@ -79,7 +66,7 @@ class _IntroScreenState extends State<IntroScreen>
           ),
         ),
         body: GestureDetector(
-          onVerticalDragStart: (dr) {
+          onVerticalDragEnd: (dr) {
             Navigator.pushReplacementNamed(context, Routes.createPlanScreen);
           },
           child: Column(

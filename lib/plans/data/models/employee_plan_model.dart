@@ -10,7 +10,19 @@ class EmployeePlanModel extends EmployeePlanEntity {
     required super.salary,
     required super.currencyType,
     required super.type,
+    required super.currentBalance,
+    required super.expenses,
+    required super.incomes,
   });
+
+  factory EmployeePlanModel.empty() => const EmployeePlanModel(
+      name: AppStrings.emptyString,
+      currencyType: CurrencyType.none,
+      currentBalance: 0,
+      expenses: [],
+      incomes: [],
+      salary: 0,
+      type: PlanType.none);
 
   factory EmployeePlanModel.fromJson(Map<String, dynamic> json) =>
       EmployeePlanModel(
@@ -21,6 +33,9 @@ class EmployeePlanModel extends EmployeePlanEntity {
             ? CurrencyType.dollar
             : CurrencyType.syrianPound,
         type: json['type'] ?? PlanType.employee.name,
+        currentBalance: json['currentBalance'] ?? 0,
+        expenses: json['expenses'] ?? [],
+        incomes: json['incomes'] ?? [],
       );
 
   String toJson() => jsonEncode({
@@ -30,5 +45,8 @@ class EmployeePlanModel extends EmployeePlanEntity {
         "currency": currencyType == CurrencyType.dollar
             ? AppStrings.dollarSympol
             : AppStrings.syrianPound,
+        "currentBalance": currentBalance.toString(),
+        "expenses": expenses.toString(),
+        "incomes": incomes.toString(),
       });
 }

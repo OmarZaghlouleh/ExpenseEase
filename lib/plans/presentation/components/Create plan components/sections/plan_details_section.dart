@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:budgeting_app/core/extensions/sizedbox_extension.dart';
 import 'package:budgeting_app/core/functions/validations.dart';
 import 'package:budgeting_app/core/utils/assets/assets_path.dart';
@@ -119,12 +117,25 @@ class PlanDetailsSection extends StatelessWidget {
                     if (Provider.of<CreatePlanProvider>(context, listen: false)
                             .getPlanType ==
                         PlanType.employee)
-                      CustomTextField(
-                        controller: salaryController,
-                        icon: const Icon(Icons.attach_money_rounded),
-                        label: AppStrings.salary,
-                        textInputType: TextInputType.number,
-                        validation: validateSalary,
+                      Consumer<CreatePlanProvider>(
+                        builder: (context, value, child) => CustomTextField(
+                          controller: salaryController,
+                          icon: value.getCurrencyType == CurrencyType.dollar
+                              ? const Icon(Icons.attach_money_rounded)
+                              : Align(
+                                  widthFactor: AppSizes.spaceSize1,
+                                  heightFactor: AppSizes.spaceSize1,
+                                  child: Text(
+                                    AppStrings.syrianPound,
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge,
+                                  ),
+                                ),
+                          label: AppStrings.salary,
+                          textInputType: TextInputType.number,
+                          validation: validateSalary,
+                        ),
                       ),
                     Padding(
                       padding: const EdgeInsets.all(AppPaddings.p15),

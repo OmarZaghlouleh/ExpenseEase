@@ -1,14 +1,15 @@
 import 'package:budgeting_app/core/extensions/sizedbox_extension.dart';
+import 'package:budgeting_app/core/functions/media_query.dart';
 import 'package:budgeting_app/core/utils/assets/assets_path.dart';
 import 'package:budgeting_app/core/utils/enums.dart';
+import 'package:budgeting_app/core/utils/sizes/media_query_sizes.dart';
 import 'package:budgeting_app/core/utils/sizes/padding.dart';
 import 'package:budgeting_app/core/utils/sizes/space_sizes.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
 import 'package:budgeting_app/plans/presentation/components/Create%20plan%20components/plan_container.dart';
 import 'package:budgeting_app/plans/presentation/controller/create_plan_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:provider/provider.dart';
 
 class SelectPlanTypeSection extends StatelessWidget {
@@ -17,6 +18,7 @@ class SelectPlanTypeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppSizes.spaceSize25.wh(),
         Padding(
@@ -31,8 +33,9 @@ class SelectPlanTypeSection extends StatelessWidget {
           builder: (context, value, child) => Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(AppPaddings.p8),
                   child: InkWell(
                     onTap: () => value.setPlanType(PlanType.employee),
                     child: PlanContainer(
@@ -46,8 +49,9 @@ class SelectPlanTypeSection extends StatelessWidget {
                 ),
               ),
               Expanded(
+                flex: 1,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(AppPaddings.p8),
                   child: InkWell(
                     onTap: () => value.setPlanType(PlanType.business),
                     child: PlanContainer(
