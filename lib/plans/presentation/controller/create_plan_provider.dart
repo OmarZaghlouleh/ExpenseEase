@@ -1,9 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
+
 import 'package:budgeting_app/core/error/failure.dart';
 import 'package:budgeting_app/core/services/service_locator.dart';
 import 'package:budgeting_app/core/utils/durations/animation_duration.dart';
 import 'package:budgeting_app/core/utils/enums.dart';
+import 'package:budgeting_app/core/utils/routes/routes_manager.dart';
 import 'package:budgeting_app/core/widgets/dialogs/error_dialog.dart';
 import 'package:budgeting_app/core/widgets/dialogs/loading_dialog.dart';
 import 'package:budgeting_app/plans/data/models/business_plan_model.dart';
@@ -63,11 +66,13 @@ class CreatePlanProvider extends ChangeNotifier {
     toggleLoading();
     //pop loading dialog
     Navigator.pop(context);
-    showErrorDialog(context: context, message: "something went wrong");
     if (result != null) {
       result.fold((l) {
+        log("Error");
         showErrorDialog(context: context, message: l.message);
-      }, (r) {});
+      }, (r) {
+        Navigator.pushReplacementNamed(context, Routes.homeScreen);
+      });
     }
   }
 

@@ -4,7 +4,7 @@ import 'package:budgeting_app/core/utils/assets/assets_path.dart';
 import 'package:budgeting_app/core/utils/enums.dart';
 import 'package:budgeting_app/core/utils/sizes/media_query_sizes.dart';
 import 'package:budgeting_app/core/utils/sizes/padding.dart';
-import 'package:budgeting_app/core/utils/sizes/space_sizes.dart';
+import 'package:budgeting_app/core/utils/sizes/app_sizes.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
 import 'package:budgeting_app/plans/presentation/components/Create%20plan%20components/plan_container.dart';
 import 'package:budgeting_app/plans/presentation/controller/create_plan_provider.dart';

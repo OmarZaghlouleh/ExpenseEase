@@ -8,7 +8,7 @@ import 'package:budgeting_app/core/utils/assets/assets_path.dart';
 import 'package:budgeting_app/core/utils/colors/app_light_colors.dart';
 import 'package:budgeting_app/core/utils/sizes/opacity.dart';
 import 'package:budgeting_app/core/utils/sizes/padding.dart';
-import 'package:budgeting_app/core/utils/sizes/space_sizes.dart';
+import 'package:budgeting_app/core/utils/sizes/app_sizes.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
 import 'package:budgeting_app/core/utils/values/app_values.dart';
 import 'package:budgeting_app/core/widgets/nothing_widget.dart';

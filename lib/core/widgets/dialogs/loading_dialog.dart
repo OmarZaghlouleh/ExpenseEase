@@ -3,7 +3,7 @@ import 'package:budgeting_app/core/utils/assets/assets_path.dart';
 import 'package:budgeting_app/core/utils/colors/app_light_colors.dart';
 import 'package:budgeting_app/core/utils/sizes/borders.dart';
 import 'package:budgeting_app/core/utils/sizes/media_query_sizes.dart';
-import 'package:budgeting_app/core/utils/sizes/space_sizes.dart';
+import 'package:budgeting_app/core/utils/sizes/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 

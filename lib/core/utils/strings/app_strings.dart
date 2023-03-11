@@ -43,4 +43,7 @@ class AppStrings {
 
   static String getMatchedNameErrorMessage(String name) =>
       "$name already exist";
+
+  static String getCurrentDate() =>
+      "${DateTime.now().month}/${DateTime.now().day}";
 }
