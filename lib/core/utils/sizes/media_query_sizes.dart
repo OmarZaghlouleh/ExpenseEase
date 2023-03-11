@@ -6,6 +6,10 @@ class MediaQuerySizes {
   static const double mq20 = 0.20;
 
   static const double mq25 = 0.25;
+  static const double mq30 = 0.30;
+  static const double mq35 = 0.35;
+  static const double mq40 = 0.40;
+
   static const double mq45 = 0.45;
 
   static const double mq5 = 0.5;

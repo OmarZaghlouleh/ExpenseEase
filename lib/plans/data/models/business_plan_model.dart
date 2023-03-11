@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:budgeting_app/core/utils/enums.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
+import 'package:budgeting_app/home/domain/entities/expense_entity.dart';
+import 'package:budgeting_app/home/domain/entities/income_entity.dart';
 import 'package:budgeting_app/plans/domain/entities/business_plan_entity.dart';
 import 'package:budgeting_app/plans/domain/entities/employee_plan_entity.dart';
 
@@ -20,20 +22,21 @@ class BusinessPlanModel extends BusinessPlanEntity {
       currencyType: CurrencyType.none,
       planType: PlanType.none,
       currentBalance: 0,
-      expenses: [],
-      incomes: []);
+      expenses: <ExpenseEntity>[],
+      incomes: <IncomeEntity>[]);
 
   factory BusinessPlanModel.fromJson(Map<String, dynamic> json) =>
       BusinessPlanModel(
         name: json['name'] ?? "",
-        currencyType: json['currency'] ??
-                AppStrings.syrianPound == AppStrings.dollarSympol
-            ? CurrencyType.dollar
-            : CurrencyType.syrianPound,
-        planType: json['type'] ?? PlanType.business.name,
-        currentBalance: json['currentBalance'] ?? 0,
-        expenses: json['expenses'] ?? [],
-        incomes: json['incomes'] ?? [],
+        currencyType: json['currency'].toString() == AppStrings.syrianPound
+            ? CurrencyType.syrianPound
+            : CurrencyType.dollar,
+        planType: json['type'].toString() == PlanType.business.name
+            ? PlanType.business
+            : PlanType.none,
+        currentBalance: double.tryParse(json['currentBalance']) ?? 0,
+        expenses: List<ExpenseEntity>.from(json['expenses']),
+        incomes: List<IncomeEntity>.from(json['expenses']),
       );
 
   String toJson() => jsonEncode({
@@ -43,7 +46,7 @@ class BusinessPlanModel extends BusinessPlanEntity {
             ? AppStrings.dollarSympol
             : AppStrings.syrianPound,
         "currentBalance": currentBalance.toString(),
-        "expenses": expenses.toString(),
-        "incomes": incomes.toString(),
+        "expenses": expenses,
+        "incomes": incomes,
       });
 }
