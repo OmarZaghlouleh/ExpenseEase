@@ -8,4 +8,6 @@ abstract class BasePlansRepository {
       {required EmployeePlanModel employeePlanModel});
   Future<Either<Failure, bool>> createBusinessPlan(
       {required BusinessPlanModel businessPlanModel});
+  Future<void> setIntroStatus({required bool status});
+  Future<void> setCreatedPlanStatus({required bool status});
 }

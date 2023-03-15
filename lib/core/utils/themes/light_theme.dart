@@ -2,6 +2,7 @@ import 'package:budgeting_app/core/utils/colors/app_light_colors.dart';
 import 'package:budgeting_app/core/utils/sizes/borders.dart';
 import 'package:budgeting_app/core/utils/sizes/font_sizes.dart';
 import 'package:budgeting_app/core/utils/sizes/app_sizes.dart';
+import 'package:budgeting_app/core/utils/sizes/padding.dart';
 import 'package:budgeting_app/core/utils/values/app_values.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +14,7 @@ ThemeData getLightTheme() => ThemeData(
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: AppLightColors.primaryLightColor,
         shape: const StadiumBorder(),
+        foregroundColor: AppLightColors.floatingIconColor,
       ),
       appBarTheme: AppBarTheme(
         titleTextStyle: GoogleFonts.inconsolata(
@@ -99,6 +101,11 @@ ThemeData getLightTheme() => ThemeData(
           ),
         ),
       ),
+      tabBarTheme: TabBarTheme(
+        indicatorColor: AppLightColors.tabBarIndicatorColor,
+        indicatorSize: TabBarIndicatorSize.label,
+        labelPadding: const EdgeInsets.all(AppPaddings.p5),
+      ),
       textTheme: TextTheme(
         displayLarge: GoogleFonts.inconsolata(
           color: AppLightColors.primaryLightColor,
@@ -148,6 +155,13 @@ ThemeData getLightTheme() => ThemeData(
           color: AppLightColors.errorDialogTextColor,
           fontSize: FontSizes.errorDialogTextFontSize,
           fontWeight: FontWeight.w500,
+        ),
+
+        //Splash Text
+        headlineLarge: GoogleFonts.inconsolata(
+          color: AppLightColors.splashTitleColor,
+          fontSize: FontSizes.splashFontSize,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );

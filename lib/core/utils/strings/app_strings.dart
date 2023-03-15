@@ -6,6 +6,9 @@ class AppStrings {
   static const String spaceString = " ";
 
   static const String syrianPound = "SYP";
+  static const String add = "Add";
+  static const String value = "Value";
+
   static const String creatingPlanErrorMessage =
       "Error while creating the plan, please try again";
 
@@ -40,6 +43,9 @@ class AppStrings {
   static const String changePlanType = "Change plan type";
   static const String gettingPlanErrorMessage =
       "Something went wrong while getting data.";
+
+  static const String expenses = "Expenses";
+  static const String incomes = "Incomes";
 
   static String getMatchedNameErrorMessage(String name) =>
       "$name already exist";

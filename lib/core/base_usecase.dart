@@ -4,3 +4,7 @@ abstract class BaseUsecase<T, P> {
 
 // T: Type
 // P: Parameter
+
+class Nothing {
+  const Nothing();
+}

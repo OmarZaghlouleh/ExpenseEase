@@ -49,6 +49,9 @@ class _IntroScreenState extends State<IntroScreen>
     super.dispose();
   }
 
+  void navigate() =>
+      Navigator.pushReplacementNamed(context, Routes.createPlanScreen);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -66,8 +69,10 @@ class _IntroScreenState extends State<IntroScreen>
           ),
         ),
         body: GestureDetector(
-          onVerticalDragEnd: (dr) {
-            Navigator.pushReplacementNamed(context, Routes.createPlanScreen);
+          onVerticalDragEnd: (dr) async {
+            await Provider.of<IntroProvider>(context, listen: false)
+                .setIntroStatus(true);
+            navigate();
           },
           child: Column(
             children: [
@@ -129,9 +134,11 @@ class _IntroScreenState extends State<IntroScreen>
                     value.getCurrentPage == 3 || value.getLastPage == 3
                         ? JelloIn(
                             child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, Routes.createPlanScreen);
+                                onPressed: () async {
+                                  await Provider.of<IntroProvider>(context,
+                                          listen: false)
+                                      .setIntroStatus(true);
+                                  navigate();
                                 },
                                 child: const Text(
                                   AppStrings.gettingStarted,

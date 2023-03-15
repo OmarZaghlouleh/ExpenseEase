@@ -1,12 +1,16 @@
 import 'package:budgeting_app/core/extensions/sizedbox_extension.dart';
 import 'package:budgeting_app/core/functions/general.dart';
+import 'package:budgeting_app/core/functions/media_query.dart';
 import 'package:budgeting_app/core/utils/assets/assets_path.dart';
 import 'package:budgeting_app/core/utils/colors/app_light_colors.dart';
 import 'package:budgeting_app/core/utils/sizes/app_sizes.dart';
 import 'package:budgeting_app/core/utils/sizes/borders.dart';
 import 'package:budgeting_app/core/utils/sizes/font_sizes.dart';
+import 'package:budgeting_app/core/utils/sizes/media_query_sizes.dart';
 import 'package:budgeting_app/core/utils/sizes/padding.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
+import 'package:budgeting_app/home/presentation/components/add_expense_dialog.dart';
+import 'package:budgeting_app/home/presentation/components/tabBar.dart';
 import 'package:budgeting_app/home/presentation/controller/home_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -29,11 +33,37 @@ class _EmployeePlanComponentState extends State<EmployeePlanComponent>
     super.initState();
   }
 
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _valueController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: InkWell(
+          onTap: () {
+            showAddExpenseModalSheet(
+                context: context,
+                namecontroller: _nameController,
+                valueController: _valueController,
+                currencyType: Provider.of<HomeProvider>(context, listen: false)
+                    .getEmployeePlanModel
+                    .currencyType);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.r8),
+                color: AppLightColors.primaryLightColor),
+            width: AppSizes.spaceSize60,
+            height: AppSizes.spaceSize30,
+            child: const Icon(
+              Icons.add,
+              color: AppLightColors.floatingIconColor,
+            ),
+          ),
+        ),
         drawer: const Drawer(),
         body: NestedScrollView(
           physics: const BouncingScrollPhysics(),
@@ -97,7 +127,7 @@ class _EmployeePlanComponentState extends State<EmployeePlanComponent>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                      "${value.getEmployeePlanModel.salary.toString()}${getCurrencySympol(value.getEmployeePlanModel.currencyType)}"),
+                                      "${value.getEmployeePlanModel.salary.toString()} ${getCurrencySympol(value.getEmployeePlanModel.currencyType)}"),
                                   AppSizes.spaceSize5.wh(),
                                   Text(
                                     "${getPercentInHundred(total: value.getEmployeePlanModel.salary, current: value.getEmployeePlanModel.currentBalance)}%",
@@ -129,35 +159,19 @@ class _EmployeePlanComponentState extends State<EmployeePlanComponent>
                     ),
                   ),
                 ),
-                bottom: TabBar(
-                  controller: _tabController,
-                  tabs: [
-                    Text("sss"),
-                    Text("sadsd"),
-                  ],
-                ),
+                bottom: customTabBar(
+                    tabController: _tabController, context: context),
               ),
             ),
           ],
           body: Padding(
-            padding: const EdgeInsets.only(top: AppPaddings.p120),
+            padding: const EdgeInsets.only(top: AppPaddings.p8),
             child: TabBarView(controller: _tabController, children: [
-              ListView(
-                children: List.generate(
-                  50,
-                  (index) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "sdasd",
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                  ),
-                ).toList(),
+              Column(
+                children: [],
               ),
               Column(
-                children: [
-                  Text("sdasd"),
-                ],
+                children: [],
               )
             ]),
           ),
