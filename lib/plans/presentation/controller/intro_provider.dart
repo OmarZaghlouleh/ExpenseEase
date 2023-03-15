@@ -1,3 +1,5 @@
+import 'package:budgeting_app/core/services/service_locator.dart';
+import 'package:budgeting_app/plans/domain/usecases/set_intro_status_usecase.dart';
 import 'package:flutter/material.dart';
 
 class IntroProvider extends ChangeNotifier {
@@ -8,6 +10,10 @@ class IntroProvider extends ChangeNotifier {
   void setAppbarTitleVisiblity(bool value) {
     _isAppbarTitleVisible = value;
     notifyListeners();
+  }
+
+  Future<void> setIntroStatus(bool status) async {
+    await getIt<SetIntroStatusUseCase>().call(status);
   }
 
   void setCurrentPage(int page) {

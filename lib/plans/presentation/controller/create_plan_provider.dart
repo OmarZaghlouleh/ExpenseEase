@@ -13,6 +13,7 @@ import 'package:budgeting_app/plans/data/models/business_plan_model.dart';
 import 'package:budgeting_app/plans/data/models/employee_plan_model.dart';
 import 'package:budgeting_app/plans/domain/usecases/create_business_plan_usecase.dart';
 import 'package:budgeting_app/plans/domain/usecases/create_employee_plan_usecase.dart';
+import 'package:budgeting_app/plans/domain/usecases/set_created_plan_status_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -70,7 +71,8 @@ class CreatePlanProvider extends ChangeNotifier {
       result.fold((l) {
         log("Error");
         showErrorDialog(context: context, message: l.message);
-      }, (r) {
+      }, (r) async {
+        await getIt<SetCreatedPlanStatus>().call(true);
         Navigator.pushReplacementNamed(context, Routes.homeScreen);
       });
     }

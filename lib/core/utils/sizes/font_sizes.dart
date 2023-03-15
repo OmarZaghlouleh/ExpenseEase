@@ -12,4 +12,5 @@ class FontSizes {
   static const double appbarTitleFontSize = 18.0;
   static const double labelSmallFontSize = 16.0;
   static const double percentFontSize = 12.0;
+  static const double splashFontSize = 35.0;
 }

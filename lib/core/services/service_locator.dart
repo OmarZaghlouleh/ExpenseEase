@@ -9,6 +9,8 @@ import 'package:budgeting_app/plans/data/repository/plans_repository.dart';
 import 'package:budgeting_app/plans/domain/repository/base_plans_repository.dart';
 import 'package:budgeting_app/plans/domain/usecases/create_business_plan_usecase.dart';
 import 'package:budgeting_app/plans/domain/usecases/create_employee_plan_usecase.dart';
+import 'package:budgeting_app/plans/domain/usecases/set_created_plan_status_usecase.dart';
+import 'package:budgeting_app/plans/domain/usecases/set_intro_status_usecase.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -26,6 +28,10 @@ class ServiceLocator {
         () => CreateEmployeePlanUsecase(getIt()));
     getIt.registerLazySingleton<CreateBusinessPlanUsecase>(
         () => CreateBusinessPlanUsecase(getIt()));
+    getIt.registerLazySingleton<SetCreatedPlanStatus>(
+        () => SetCreatedPlanStatus(getIt()));
+    getIt.registerLazySingleton<SetIntroStatusUseCase>(
+        () => SetIntroStatusUseCase(getIt()));
   }
 
   static Future<void> initHome() async {

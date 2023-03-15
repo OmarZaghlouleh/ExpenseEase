@@ -9,6 +9,7 @@ import 'package:budgeting_app/core/utils/sizes/media_query_sizes.dart';
 import 'package:budgeting_app/core/utils/sizes/padding.dart';
 import 'package:budgeting_app/core/utils/sizes/app_sizes.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
+import 'package:budgeting_app/core/widgets/syrian_pound_icon.dart';
 import 'package:budgeting_app/core/widgets/text_field_widget.dart';
 import 'package:budgeting_app/plans/presentation/controller/create_plan_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -122,16 +123,7 @@ class PlanDetailsSection extends StatelessWidget {
                           controller: salaryController,
                           icon: value.getCurrencyType == CurrencyType.dollar
                               ? const Icon(Icons.attach_money_rounded)
-                              : Align(
-                                  widthFactor: AppSizes.spaceSize1,
-                                  heightFactor: AppSizes.spaceSize1,
-                                  child: Text(
-                                    AppStrings.syrianPound,
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                ),
+                              : const SYPIcon(),
                           label: AppStrings.salary,
                           textInputType: TextInputType.number,
                           validation: validateSalary,

@@ -15,10 +15,7 @@ void main() async {
   await ServiceLocator.init();
   await Hive.initFlutter();
   await Hive.openBox(AppConstants.plansBox);
-  await Hive.box(AppConstants.plansBox).clear();
   await Hive.openBox(AppConstants.appDataBox);
-
-  await Hive.box(AppConstants.appDataBox).clear();
 
   runApp(const BudgetingApp());
 }

@@ -19,6 +19,7 @@ class AppSizes {
   static const double spaceSize80 = 80;
   static const double spaceSize120 = 120;
   static const double spaceSize150 = 150;
+  static const double spaceSize250 = 250;
 
   static const double percentIndicatorRadius = 80;
 

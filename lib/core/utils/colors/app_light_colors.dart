@@ -17,4 +17,15 @@ class AppLightColors {
   static const Color coloredAppbarTitleColor = Colors.white;
   static const Color verticalDividerColor = Colors.white70;
   static const Color labelSmallColor = Colors.white70;
+  static const Color splashTitleColor = Colors.white;
+  static const Color floatingIconColor = Colors.white;
+  static Color bottomSheetBackgroundColor =
+      Colors.white.withOpacity(AppOpacity.op09);
+
+  //tabbar Colors
+  static const Color tabBarDividerColor = Colors.white70;
+  static const Color tabBarIndicatorColor = Colors.white;
+  static const Color tabBarBackgroundColor = Colors.black26;
+
+  static List<Color> splashColors = [Colors.white, Colors.teal.shade400];
 }
