@@ -1,5 +1,6 @@
 import 'package:budgeting_app/core/functions/media_query.dart';
 import 'package:budgeting_app/core/utils/sizes/media_query_sizes.dart';
+import 'package:budgeting_app/core/utils/sizes/padding.dart';
 import 'package:flutter/material.dart';
 
 class AppSizes {
@@ -30,4 +31,7 @@ class AppSizes {
   static double getAppBarBackgroundHeight(BuildContext context) =>
       getMediaQueryInstance(context: context).size.height *
       MediaQuerySizes.mq15;
+
+  static double getTabBarViewPadding(BuildContext context) =>
+      getAppBarBackgroundHeight(context) + AppPaddings.p12;
 }

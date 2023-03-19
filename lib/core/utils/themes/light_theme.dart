@@ -101,10 +101,10 @@ ThemeData getLightTheme() => ThemeData(
           ),
         ),
       ),
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: const TabBarTheme(
         indicatorColor: AppLightColors.tabBarIndicatorColor,
         indicatorSize: TabBarIndicatorSize.label,
-        labelPadding: const EdgeInsets.all(AppPaddings.p5),
+        labelPadding: EdgeInsets.all(AppPaddings.p5),
       ),
       textTheme: TextTheme(
         displayLarge: GoogleFonts.inconsolata(

@@ -1,7 +1,6 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:budgeting_app/core/error/error_model.dart';
 import 'package:budgeting_app/core/error/local_exception.dart';

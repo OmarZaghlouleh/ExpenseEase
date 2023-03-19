@@ -1,13 +1,11 @@
 import 'package:budgeting_app/core/extensions/sizedbox_extension.dart';
 import 'package:budgeting_app/core/utils/colors/app_light_colors.dart';
 import 'package:budgeting_app/core/utils/sizes/app_sizes.dart';
-import 'package:budgeting_app/core/utils/sizes/borders.dart';
 import 'package:budgeting_app/core/utils/sizes/padding.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
-import 'package:budgeting_app/home/presentation/controller/home_provider.dart';
+import 'package:budgeting_app/home/presentation/controller/business_provider.dart';
 import 'package:flutter/material.dart';
 
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class BusinessPlanComponent extends StatefulWidget {
@@ -31,7 +29,7 @@ class _BusinessPlanComponentState extends State<BusinessPlanComponent>
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        drawer: Drawer(),
+        drawer: const Drawer(),
         body: NestedScrollView(
           physics: const BouncingScrollPhysics(),
           floatHeaderSlivers: true,
@@ -51,7 +49,7 @@ class _BusinessPlanComponentState extends State<BusinessPlanComponent>
                   ),
                 ],
                 backgroundColor: AppLightColors.primaryLightColor,
-                title: Consumer<HomeProvider>(
+                title: Consumer<BusinessProvider>(
                   builder: (context, value, child) => Text(
                     value.getBusinessPlanModel.name,
                     style: Theme.of(context)
@@ -84,7 +82,7 @@ class _BusinessPlanComponentState extends State<BusinessPlanComponent>
                 ),
                 bottom: TabBar(
                   controller: _tabController,
-                  tabs: [
+                  tabs: const [
                     Text("sss"),
                     Text("sadsd"),
                   ],
@@ -108,7 +106,7 @@ class _BusinessPlanComponentState extends State<BusinessPlanComponent>
                 ).toList(),
               ),
               Column(
-                children: [
+                children: const [
                   Text("sdasd"),
                 ],
               )

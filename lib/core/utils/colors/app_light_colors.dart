@@ -19,6 +19,9 @@ class AppLightColors {
   static const Color labelSmallColor = Colors.white70;
   static const Color splashTitleColor = Colors.white;
   static const Color floatingIconColor = Colors.white;
+  static const Color minimizeColor = Colors.red;
+  static const Color addColor = Colors.green;
+
   static Color bottomSheetBackgroundColor =
       Colors.white.withOpacity(AppOpacity.op09);
 

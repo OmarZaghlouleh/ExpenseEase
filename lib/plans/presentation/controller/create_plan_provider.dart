@@ -16,7 +16,6 @@ import 'package:budgeting_app/plans/domain/usecases/create_employee_plan_usecase
 import 'package:budgeting_app/plans/domain/usecases/set_created_plan_status_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class CreatePlanProvider extends ChangeNotifier {
   PlanType? _planType;

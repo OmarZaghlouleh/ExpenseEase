@@ -1,8 +1,6 @@
 import 'package:budgeting_app/core/extensions/sizedbox_extension.dart';
-import 'package:budgeting_app/core/functions/media_query.dart';
 import 'package:budgeting_app/core/utils/assets/assets_path.dart';
 import 'package:budgeting_app/core/utils/enums.dart';
-import 'package:budgeting_app/core/utils/sizes/media_query_sizes.dart';
 import 'package:budgeting_app/core/utils/sizes/padding.dart';
 import 'package:budgeting_app/core/utils/sizes/app_sizes.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
