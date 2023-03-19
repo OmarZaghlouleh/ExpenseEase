@@ -5,4 +5,6 @@ class AppConstants {
   static const String appDataBox = "appData";
   static const String isPlanCreated = "isPlanCreated";
   static const String isIntroskipped = "isIntroskipped";
+  static const String expensesBox = "expensesBox";
+  static const String incomesBox = "incomesBox";
 }

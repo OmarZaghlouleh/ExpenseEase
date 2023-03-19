@@ -5,7 +5,6 @@ import 'package:budgeting_app/core/utils/strings/app_strings.dart';
 import 'package:budgeting_app/home/domain/entities/expense_entity.dart';
 import 'package:budgeting_app/home/domain/entities/income_entity.dart';
 import 'package:budgeting_app/plans/domain/entities/business_plan_entity.dart';
-import 'package:budgeting_app/plans/domain/entities/employee_plan_entity.dart';
 
 class BusinessPlanModel extends BusinessPlanEntity {
   const BusinessPlanModel({

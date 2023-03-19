@@ -1,11 +1,9 @@
 import 'package:budgeting_app/core/services/service_locator.dart';
-import 'package:budgeting_app/home/presentation/controller/home_provider.dart';
 import 'package:budgeting_app/home/presentation/screens/home_screen.dart';
 import 'package:budgeting_app/plans/presentation/screens/create_plan_screen.dart';
 import 'package:budgeting_app/plans/presentation/screens/intro_screen.dart';
 import 'package:budgeting_app/splash/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class Routes {
   static const String splashScreen = "/";

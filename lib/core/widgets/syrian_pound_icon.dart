@@ -1,8 +1,6 @@
 import 'package:budgeting_app/core/utils/sizes/app_sizes.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class SYPIcon extends StatelessWidget {
   const SYPIcon({super.key});
