@@ -16,6 +16,8 @@ class AppLightColors {
   static const Color percentCircularBackgroundColor = Colors.white;
   static const Color coloredAppbarTitleColor = Colors.white;
   static const Color verticalDividerColor = Colors.white70;
+  static const Color verticalDividerColorForWhiteBackground = Colors.black54;
+
   static const Color labelSmallColor = Colors.white70;
   static const Color splashTitleColor = Colors.white;
   static const Color floatingIconColor = Colors.white;

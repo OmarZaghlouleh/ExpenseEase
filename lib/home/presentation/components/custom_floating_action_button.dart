@@ -19,13 +19,12 @@ class CustomFloatingActionbutton extends StatelessWidget {
             top: getMediaQueryInstance(context: context).size.height * 0.9,
             left: getMediaQueryInstance(context: context).size.width * 0.82,
             child: Roulette(
-              child: FloatingActionButton(
-                onPressed: () {
-                  value.triggerFloatingActionButtonState();
-                },
-                child: Icon(value.getFloatingActionButtonState
-                    ? Icons.playlist_add_check_circle_outlined
-                    : Icons.playlist_add_check_circle_rounded),
+              child: Container(
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: value.getFloatingActionButtonState
+                        ? AppLightColors.primaryLightColor
+                        : AppLightColors.transparent),
               ),
             ),
           ),
@@ -34,15 +33,11 @@ class CustomFloatingActionbutton extends StatelessWidget {
             Positioned(
               top: getMediaQueryInstance(context: context).size.height * 0.81,
               left: getMediaQueryInstance(context: context).size.width * 0.82,
-              child: Roulette(
+              child: SlideInUp(
                 duration:
                     AnimationDuration.floatingActionButtonAnimationDuration,
                 child: FloatingActionButton(
                   backgroundColor: AppLightColors.blueColor,
-                  child: const Icon(
-                    Icons.minimize_rounded,
-                    color: AppLightColors.minimizeColor,
-                  ),
                   onPressed: () {},
                 ),
               ),
@@ -57,10 +52,6 @@ class CustomFloatingActionbutton extends StatelessWidget {
                     AnimationDuration.floatingActionButtonAnimationDuration,
                 child: FloatingActionButton(
                   backgroundColor: AppLightColors.blueColor,
-                  child: const Icon(
-                    Icons.add_rounded,
-                    color: AppLightColors.addColor,
-                  ),
                   onPressed: () {},
                 ),
               ),

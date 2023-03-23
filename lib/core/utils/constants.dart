@@ -7,4 +7,7 @@ class AppConstants {
   static const String isIntroskipped = "isIntroskipped";
   static const String expensesBox = "expensesBox";
   static const String incomesBox = "incomesBox";
+  static const String foldersBox = "foldersBox";
+  static const String expenseKey = "expense";
+  static const String incomeKey = "income";
 }

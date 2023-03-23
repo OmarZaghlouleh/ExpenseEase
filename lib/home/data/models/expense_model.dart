@@ -1,3 +1,4 @@
+import 'package:budgeting_app/core/utils/constants.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
 import 'package:budgeting_app/home/domain/entities/expense_entity.dart';
 
@@ -13,6 +14,7 @@ class ExpenseModel extends ExpenseEntity {
     return {
       'name': name,
       'paid': paid,
+      'type': AppConstants.expenseKey,
     };
   }
 }

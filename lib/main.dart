@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:budgeting_app/core/services/service_locator.dart';
 import 'package:budgeting_app/core/utils/constants.dart';
 import 'package:budgeting_app/core/utils/routes/routes_manager.dart';
@@ -20,6 +22,9 @@ void main() async {
   await Hive.openBox(AppConstants.appDataBox);
   await Hive.openBox(AppConstants.expensesBox);
   await Hive.openBox(AppConstants.incomesBox);
+  await Hive.openBox(AppConstants.foldersBox);
+  //await Hive.box(AppConstants.expensesBox).clear();
+  log(Hive.box(AppConstants.expensesBox).toMap().toString());
 
   runApp(const BudgetingApp());
 }
