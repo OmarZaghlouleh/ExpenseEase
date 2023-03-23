@@ -1,8 +1,9 @@
 import 'dart:developer';
+import 'dart:math';
 
-import 'package:animate_do/animate_do.dart';
 import 'package:budgeting_app/core/extensions/sizedbox_extension.dart';
 import 'package:budgeting_app/core/functions/general.dart';
+import 'package:budgeting_app/core/functions/get_widget_location.dart';
 import 'package:budgeting_app/core/functions/media_query.dart';
 import 'package:budgeting_app/core/utils/assets/assets_path.dart';
 import 'package:budgeting_app/core/utils/colors/app_light_colors.dart';
@@ -12,15 +13,20 @@ import 'package:budgeting_app/core/utils/sizes/app_sizes.dart';
 import 'package:budgeting_app/core/utils/sizes/borders.dart';
 import 'package:budgeting_app/core/utils/sizes/elevations.dart';
 import 'package:budgeting_app/core/utils/sizes/font_sizes.dart';
+import 'package:budgeting_app/core/utils/sizes/media_query_sizes.dart';
 import 'package:budgeting_app/core/utils/sizes/padding.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
 import 'package:budgeting_app/core/widgets/circular_progress_indicator.dart';
-import 'package:budgeting_app/home/presentation/components/add_expense_dialog.dart';
+import 'package:budgeting_app/home/data/models/expense_model.dart';
+import 'package:budgeting_app/home/domain/entities/expense_entity.dart';
+import 'package:budgeting_app/home/presentation/components/add_expense_modal_sheet.dart';
+import 'package:budgeting_app/home/presentation/components/add_folder_modal_sheet.dart';
 import 'package:budgeting_app/home/presentation/components/custom_floating_action_button.dart';
+import 'package:budgeting_app/home/presentation/components/employee/expenses_list.dart';
+import 'package:budgeting_app/home/presentation/components/employee/folders_list.dart';
 import 'package:budgeting_app/home/presentation/components/tabBar.dart';
 import 'package:budgeting_app/home/presentation/controller/employee_provider.dart';
 import 'package:flutter/material.dart';
-
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -34,14 +40,27 @@ class EmployeePlanComponent extends StatefulWidget {
 class _EmployeePlanComponentState extends State<EmployeePlanComponent>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+
+  final ScrollController _foldersScrollController = ScrollController();
+  final ScrollController _expensesScrollController = ScrollController();
+  final PageController _pageController = PageController();
+
+  final _listViewKey = GlobalKey();
+
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+
     super.initState();
   }
 
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _valueController = TextEditingController();
+  @override
+  void dispose() {
+    _tabController.dispose();
+    _foldersScrollController.dispose();
+    _expensesScrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -194,50 +213,83 @@ class _EmployeePlanComponentState extends State<EmployeePlanComponent>
                                 padding:
                                     const EdgeInsets.only(top: AppPaddings.p8),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(
-                                          Icons.create_new_folder_rounded),
-                                      color: AppLightColors.blueColor,
-                                    )
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        TextButton(
+                                            onPressed: () {
+                                              showFolderModalSheet(
+                                                  context: context,
+                                                  planType: PlanType.employee);
+                                            },
+                                            child: const Text(
+                                                AppStrings.addFolder)),
+                                        const SizedBox(
+                                          height: AppSizes.spaceSize25,
+                                          child: VerticalDivider(
+                                            color: AppLightColors
+                                                .verticalDividerColorForWhiteBackground,
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            showAddExpenseModalSheet(
+                                                context: context,
+                                                // namecontroller: _nameController,
+                                                // valueController: _valueController,
+                                                currencyType: value
+                                                    .getEmployeePlanModel
+                                                    .currencyType,
+                                                planType: PlanType.employee);
+                                          },
+                                          child:
+                                              const Text(AppStrings.addExpense),
+                                        ),
+                                        const SizedBox(
+                                          height: AppSizes.spaceSize25,
+                                          child: VerticalDivider(
+                                            color: AppLightColors
+                                                .verticalDividerColorForWhiteBackground,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Consumer<EmployeeProvider>(
+                                        builder: (context, value, child) =>
+                                            InkWell(
+                                              onTap: () {
+                                                value.triggerFileVisibility(
+                                                    pageController:
+                                                        _pageController);
+                                              },
+                                              child: Icon(
+                                                value.getFileVisibility
+                                                    ? Icons.folder_rounded
+                                                    : Icons.menu,
+                                                color: value.getFileVisibility
+                                                    ? AppLightColors.blueColor
+                                                    : AppLightColors
+                                                        .primaryLightColor,
+                                              ),
+                                            )),
                                   ],
                                 ),
                               ),
-                              MediaQuery.removePadding(
-                                removeTop: true,
-                                context: context,
-                                child: Expanded(
-                                  child: ListView(
-                                    physics: const BouncingScrollPhysics(),
-                                    children: value.getExpenses.map((expense) {
-                                      return Card(
-                                        shadowColor:
-                                            AppLightColors.primaryLightColor,
-                                        elevation: AppElevation.e2,
-                                        child: ListTile(
-                                          leading: const Icon(
-                                            Icons.minimize_rounded,
-                                            color: AppLightColors.minimizeColor,
-                                          ),
-                                          style: ListTileStyle.list,
-                                          title: Text(
-                                            expense.name,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displayMedium,
-                                          ),
-                                          subtitle: Text(
-                                            "${expense.paid} ${getCurrencySympol(value.getEmployeePlanModel.currencyType)}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displaySmall,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
+                              Expanded(
+                                child: PageView(
+                                  controller: _pageController,
+                                  children: [
+                                    ExpensesList(
+                                        scrollController:
+                                            _expensesScrollController),
+                                    FoldersList(
+                                        scrollController:
+                                            _foldersScrollController),
+                                  ],
                                 ),
                               ),
                             ],

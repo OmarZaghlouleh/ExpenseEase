@@ -2,8 +2,9 @@ import 'package:budgeting_app/core/utils/sizes/padding.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField(
-      {required this.controller,
+  CustomTextField(
+      {this.autoFocus = false,
+      required this.controller,
       required this.icon,
       required this.label,
       required this.textInputType,
@@ -15,12 +16,14 @@ class CustomTextField extends StatelessWidget {
   final String label;
   final TextInputType textInputType;
   final String? Function(String? value) validation;
+  bool autoFocus = false;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(AppPaddings.p15),
       child: TextFormField(
+        autofocus: autoFocus,
         //key: formKey,
         validator: validation,
         keyboardType: textInputType,

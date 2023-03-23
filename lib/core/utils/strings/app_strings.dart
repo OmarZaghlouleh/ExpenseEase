@@ -8,11 +8,20 @@ class AppStrings {
   static const String syrianPound = "SYP";
   static const String add = "Add";
   static const String value = "Value";
+  static const String addExpense = '+ Expense';
+  static const String addFolder = '+ Folder';
+  static const String folders = 'Folders';
 
   static const String creatingPlanErrorMessage =
       "Error while creating the plan, please try again";
+  static const String gettingExpesnesErrorMessage = "Error while getting data.";
+  static const String gettingFoldersErrorMessage = "Error while getting data.";
 
   static const String withCapitalText = "With";
+  static const String addExpenseErrorMessage =
+      "Error while Adding expense, please try again";
+  static const String addFolderErrorMessage =
+      "Error while Adding folder, please try again";
   static const String intro1 = "you can easily track your income and expenses.";
   static const String intro2 =
       "Set and monitor budgets, and gain valuable insights into your spending habits.";

@@ -5,10 +5,11 @@ import 'package:budgeting_app/core/services/service_locator.dart';
 import 'package:budgeting_app/core/widgets/dialogs/error_dialog.dart';
 import 'package:budgeting_app/home/domain/usecases/get_business_plan_details.usecase.dart';
 import 'package:budgeting_app/plans/data/models/business_plan_model.dart';
+import 'package:budgeting_app/plans/domain/entities/business_plan_entity.dart';
 import 'package:flutter/material.dart';
 
 class BusinessProvider extends ChangeNotifier {
-  BusinessPlanModel _businessPlanModel = BusinessPlanModel.empty();
+  BusinessPlanEntity _businessPlanModel = BusinessPlanModel.empty();
 
   void setBusinessPlanModel({required BuildContext context}) {
     log("Setting business");
@@ -25,5 +26,5 @@ class BusinessProvider extends ChangeNotifier {
     });
   }
 
-  BusinessPlanModel get getBusinessPlanModel => _businessPlanModel;
+  BusinessPlanEntity get getBusinessPlanModel => _businessPlanModel;
 }
