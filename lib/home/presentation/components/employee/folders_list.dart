@@ -1,4 +1,5 @@
 import 'package:budgeting_app/core/utils/colors/app_light_colors.dart';
+import 'package:budgeting_app/core/utils/enums.dart';
 import 'package:budgeting_app/core/utils/sizes/elevations.dart';
 import 'package:budgeting_app/home/presentation/components/employee/expense_card.dart';
 import 'package:budgeting_app/home/presentation/controller/employee_provider.dart';
@@ -7,9 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FoldersList extends StatelessWidget {
-  const FoldersList({required this.scrollController, super.key});
+  const FoldersList(
+      {required this.scrollController, super.key, required this.planType});
 
   final ScrollController scrollController;
+  final PlanType planType;
   @override
   Widget build(BuildContext context) {
     return Consumer<EmployeeProvider>(
@@ -39,8 +42,13 @@ class FoldersList extends StatelessWidget {
                   ),
                   children: folder.expenses.reversed
                       .map<Widget>(
-                        (expense) =>
-                            ExpenseCard(expense: expense, value: value),
+                        (expense) => ExpenseCard(
+                          expense: expense,
+                          value: value,
+                          inFolder: true,
+                          folderName: folder.name,
+                          planType: planType,
+                        ),
                       )
                       .toList(),
                 ),

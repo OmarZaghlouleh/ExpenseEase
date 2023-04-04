@@ -6,15 +6,15 @@ import 'package:equatable/equatable.dart';
 import 'package:budgeting_app/core/base_usecase.dart';
 import 'package:budgeting_app/core/error/failure.dart';
 
-class DeleteExpenseFromFolderUsecase extends BaseUsecase<
-    Future<Either<Failure, void>>, DeleteExpenseFromFolderUsecaseParameters> {
+class RemoveExpenseFromFolderUsecase extends BaseUsecase<
+    Future<Either<Failure, void>>, RemoveExpenseFromFolderUsecaseParameters> {
   final BaseHomeRepository _baseHomeRepository;
 
-  DeleteExpenseFromFolderUsecase(this._baseHomeRepository);
+  RemoveExpenseFromFolderUsecase(this._baseHomeRepository);
   @override
   Future<Either<Failure, void>> call(
-      DeleteExpenseFromFolderUsecaseParameters p) async {
-    return await _baseHomeRepository.deleteExpenseFromFolder(
+      RemoveExpenseFromFolderUsecaseParameters p) async {
+    return await _baseHomeRepository.removeExpenseFromFolder(
       planName: p.planName,
       expenseName: p.expenseName,
       folderName: p.folderName,
@@ -22,11 +22,11 @@ class DeleteExpenseFromFolderUsecase extends BaseUsecase<
   }
 }
 
-class DeleteExpenseFromFolderUsecaseParameters extends Equatable {
+class RemoveExpenseFromFolderUsecaseParameters extends Equatable {
   final String planName;
   final String expenseName;
   final String folderName;
-  const DeleteExpenseFromFolderUsecaseParameters({
+  const RemoveExpenseFromFolderUsecaseParameters({
     required this.planName,
     required this.expenseName,
     required this.folderName,

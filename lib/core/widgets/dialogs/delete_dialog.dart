@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 void showDeleteDialog(
     {required BuildContext context,
     required Function function,
+    required String title,
     List<Widget> extraActions = const <Widget>[]}) {
   List<Widget> actions = extraActions.isEmpty
       ? [
@@ -80,7 +81,7 @@ void showDeleteDialog(
       elevation: AppSizes.spaceSize0,
       actions: actions,
       content: Text(
-        AppStrings.areYouSure,
+        title,
         style: Theme.of(context).textTheme.headlineMedium,
       ),
     ),
