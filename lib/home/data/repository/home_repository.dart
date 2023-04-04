@@ -9,7 +9,9 @@ import 'package:budgeting_app/home/domain/repository/base_home_repository.dart';
 import 'package:budgeting_app/home/domain/usecases/add_expense_to_folder.dart';
 import 'package:budgeting_app/home/domain/usecases/add_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/add_to_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/delete_expense_from_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/delete_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/edit_expense_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:budgeting_app/plans/data/models/employee_plan_model.dart';
 import 'package:budgeting_app/plans/data/models/business_plan_model.dart';
@@ -132,11 +134,39 @@ class HomeRepository implements BaseHomeRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteExpenseFromFolder(
+  Future<Either<Failure, void>> removeExpenseFromFolder(
       {required String planName,
       required String expenseName,
-      required String folderName}) {
-    // TODO: implement deleteExpenseFromFolder
-    throw UnimplementedError();
+      required String folderName}) async {
+    try {
+      await baseHomeLocalDataSource.removeExpenseFromFolder(
+          removeExpenseFromFolderUsecaseParameters:
+              RemoveExpenseFromFolderUsecaseParameters(
+                  planName: planName,
+                  expenseName: expenseName,
+                  folderName: folderName));
+      return const Right(null);
+    } on LocalException catch (e) {
+      return Left(LocalFailure(message: e.errorModel.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ExpenseModel>> editExpense(
+      {required String newName,
+      required double newValue,
+      required String oldName,
+      required String planName}) async {
+    try {
+      ExpenseModel expenseModel = await baseHomeLocalDataSource.editExpense(
+          editExpenseUsecaseParameters: EditExpenseUsecaseParameters(
+              newName: newName,
+              newValue: newValue,
+              oldName: oldName,
+              planName: planName));
+      return Right(expenseModel);
+    } on LocalException catch (e) {
+      return Left(LocalFailure(message: e.errorModel.message));
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:budgeting_app/core/functions/media_query.dart';
 import 'package:budgeting_app/core/utils/colors/app_light_colors.dart';
 import 'package:budgeting_app/core/utils/enums.dart';
+import 'package:budgeting_app/core/utils/sizes/padding.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
 import 'package:budgeting_app/core/widgets/syrian_pound_icon.dart';
 import 'package:budgeting_app/core/widgets/text_field_widget.dart';
@@ -10,12 +11,15 @@ import 'package:provider/provider.dart';
 
 void showAddExpenseModalSheet(
     {required BuildContext context,
-    // required TextEditingController namecontroller,
-    // required TextEditingController valueController,
+    bool edit = false,
+    String oldName = "",
+    String oldValue = "",
     required CurrencyType currencyType,
     required PlanType planType}) {
   final TextEditingController nameController = TextEditingController();
+  nameController.text = oldName;
   final TextEditingController valueController = TextEditingController();
+  valueController.text = oldValue;
   GlobalKey<FormState> formKey = GlobalKey();
   showModalBottomSheet(
     isScrollControlled: true,
@@ -52,31 +56,48 @@ void showAddExpenseModalSheet(
                     return AppStrings.invalid;
                   }
                 }),
-            ElevatedButton(
-                onPressed: () async {
-                  if (formKey.currentState!.validate()) {
-                    Navigator.pop(ctx);
-                    switch (planType) {
-                      case PlanType.employee:
-                        await Provider.of<EmployeeProvider>(context,
-                                listen: false)
-                            .addToExpenses(
-                                context: context,
-                                name: nameController.text.trim(),
-                                value: double.tryParse(
-                                        valueController.text.trim()) ??
-                                    0);
-                        break;
-                      case PlanType.business:
-                        break;
-                      case PlanType.none:
-                        return;
+            Padding(
+              padding: const EdgeInsets.all(AppPaddings.p8),
+              child: ElevatedButton(
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      Navigator.pop(ctx);
+                      switch (planType) {
+                        case PlanType.employee:
+                          if (edit) {
+                            if (nameController.text.trim() == oldName &&
+                                valueController.text.trim() == oldValue) return;
+                            await Provider.of<EmployeeProvider>(context,
+                                    listen: false)
+                                .editExpense(
+                                    newName: nameController.text.trim(),
+                                    oldName: oldName,
+                                    newValue: double.tryParse(
+                                            valueController.text.trim()) ??
+                                        0,
+                                    context: context);
+                          } else {
+                            await Provider.of<EmployeeProvider>(context,
+                                    listen: false)
+                                .addToExpenses(
+                                    context: context,
+                                    name: nameController.text.trim(),
+                                    value: double.tryParse(
+                                            valueController.text.trim()) ??
+                                        0);
+                          }
+                          break;
+                        case PlanType.business:
+                          break;
+                        case PlanType.none:
+                          return;
+                      }
+                      nameController.clear();
+                      valueController.clear();
                     }
-                    nameController.clear();
-                    valueController.clear();
-                  }
-                },
-                child: const Text(AppStrings.add))
+                  },
+                  child: Text(edit ? AppStrings.edit : AppStrings.add)),
+            )
           ],
         ),
       ),

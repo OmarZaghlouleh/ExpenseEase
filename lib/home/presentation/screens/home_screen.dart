@@ -1,8 +1,8 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
 import 'package:budgeting_app/core/utils/enums.dart';
-import 'package:budgeting_app/home/presentation/components/business_component.dart';
-import 'package:budgeting_app/home/presentation/components/employee/employee_component.dart';
+import 'package:budgeting_app/home/presentation/screens/business_component.dart';
+import 'package:budgeting_app/home/presentation/screens/employee_component.dart';
 import 'package:budgeting_app/home/presentation/controller/home_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

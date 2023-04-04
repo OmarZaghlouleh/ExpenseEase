@@ -34,9 +34,15 @@ abstract class BaseHomeRepository {
     required String expenseName,
     required bool alsoFromFiles,
   });
-  Future<Either<Failure, void>> deleteExpenseFromFolder({
+  Future<Either<Failure, void>> removeExpenseFromFolder({
     required String planName,
     required String expenseName,
     required String folderName,
   });
+
+  Future<Either<Failure, ExpenseModel>> editExpense(
+      {required String newName,
+      required double newValue,
+      required String oldName,
+      required String planName});
 }

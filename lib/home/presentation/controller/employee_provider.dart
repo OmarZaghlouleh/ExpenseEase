@@ -12,7 +12,9 @@ import 'package:budgeting_app/home/domain/entities/expenses_folder_entity.dart';
 import 'package:budgeting_app/home/domain/usecases/add_expense_to_folder.dart';
 import 'package:budgeting_app/home/domain/usecases/add_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/add_to_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/delete_expense_from_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/delete_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/edit_expense_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_employee_plan_details_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_expenses_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_folders_usecase.dart';
@@ -49,11 +51,13 @@ class EmployeeProvider extends ChangeNotifier {
     _isFileVisible = !_isFileVisible;
     if (pageController.page == pageController.initialPage) {
       pageController.nextPage(
-          duration: const Duration(milliseconds: AnimationDuration.d500),
+          duration:
+              const Duration(milliseconds: AnimationDuration.pageViewDuration),
           curve: Curves.linear);
     } else {
       pageController.previousPage(
-          duration: const Duration(milliseconds: AnimationDuration.d500),
+          duration:
+              const Duration(milliseconds: AnimationDuration.pageViewDuration),
           curve: Curves.linear);
     }
     notifyListeners();
@@ -159,6 +163,34 @@ class EmployeeProvider extends ChangeNotifier {
     });
   }
 
+  Future<void> editExpense(
+      {required String newName,
+      required String oldName,
+      required double newValue,
+      required BuildContext context}) async {
+    final result = await getIt<EditExpenseUsecase>().call(
+        EditExpenseUsecaseParameters(
+            newName: newName,
+            newValue: newValue,
+            oldName: oldName,
+            planName: getEmployeePlanModel.name));
+
+    result.fold((l) {
+      showErrorDialog(context: context, message: l.message);
+    }, (r) {
+      int oldIndex = _expenses.indexWhere((element) => element.name == oldName);
+      _expenses.removeWhere((element) => element.name == oldName);
+      _expenses.insert(oldIndex, r);
+      for (var element in _folders) {
+        int oldIndex =
+            element.expenses.indexWhere((element) => element.name == oldName);
+        element.expenses.removeWhere((element) => element.name == oldName);
+        element.expenses.insert(oldIndex, r);
+        notifyListeners();
+      }
+    });
+  }
+
   Future<void> addExpenseToFolder(
       {required ExpenseModel expenseModel,
       required BuildContext context}) async {
@@ -197,6 +229,27 @@ class EmployeeProvider extends ChangeNotifier {
       for (var element in getFolders) {
         element.expenses.removeWhere((element) => element.name == expenseName);
       }
+      notifyListeners();
+    });
+  }
+
+  Future<void> removeExpenseFromFolder(
+      {required String expenseName,
+      required String folderName,
+      required BuildContext context}) async {
+    final result = await getIt<RemoveExpenseFromFolderUsecase>().call(
+        RemoveExpenseFromFolderUsecaseParameters(
+            planName: getEmployeePlanModel.name,
+            expenseName: expenseName,
+            folderName: folderName));
+
+    result.fold((l) {
+      showErrorDialog(context: context, message: l.message);
+    }, (r) {
+      getFolders
+          .firstWhere((element) => element.name == folderName)
+          .expenses
+          .removeWhere((element) => element.name == expenseName);
       notifyListeners();
     });
   }

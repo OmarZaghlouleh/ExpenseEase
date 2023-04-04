@@ -3,6 +3,7 @@ import 'package:budgeting_app/core/functions/media_query.dart';
 import 'package:budgeting_app/core/utils/colors/app_light_colors.dart';
 import 'package:budgeting_app/core/utils/constants.dart';
 import 'package:budgeting_app/core/utils/durations/animation_duration.dart';
+import 'package:budgeting_app/core/utils/enums.dart';
 import 'package:budgeting_app/core/utils/sizes/app_sizes.dart';
 import 'package:budgeting_app/core/utils/sizes/borders.dart';
 import 'package:budgeting_app/core/utils/sizes/elevations.dart';
@@ -19,9 +20,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ExpensesList extends StatelessWidget {
-  const ExpensesList({required this.scrollController, super.key});
+  const ExpensesList(
+      {required this.scrollController, super.key, required this.planType});
 
   final ScrollController scrollController;
+  final PlanType planType;
   @override
   Widget build(BuildContext context) {
     return Consumer<EmployeeProvider>(
@@ -32,7 +35,11 @@ class ExpensesList extends StatelessWidget {
           controller: scrollController,
           physics: const BouncingScrollPhysics(),
           children: value.getExpenses.reversed.map((expense) {
-            return ExpenseCard(expense: expense, value: value);
+            return ExpenseCard(
+              expense: expense,
+              value: value,
+              planType: planType,
+            );
           }).toList(),
         ),
       ),

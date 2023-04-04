@@ -4,6 +4,7 @@ class AnimationDuration {
   static const int d300 = 300;
   static const int d500 = 500;
   static const int d1000 = 1000;
+  static const int pageViewDuration = 300;
 
   static Duration get floatingActionButtonAnimationDuration =>
       const Duration(milliseconds: 300);

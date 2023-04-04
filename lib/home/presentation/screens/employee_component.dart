@@ -202,7 +202,7 @@ class _EmployeePlanComponentState extends State<EmployeePlanComponent>
                                                   duration: const Duration(
                                                       milliseconds:
                                                           AnimationDuration
-                                                              .d500),
+                                                              .pageViewDuration),
                                                   curve: Curves.linear);
                                               value.changeFileVisibilty();
                                             }
@@ -230,7 +230,7 @@ class _EmployeePlanComponentState extends State<EmployeePlanComponent>
                                                   duration: const Duration(
                                                       milliseconds:
                                                           AnimationDuration
-                                                              .d500),
+                                                              .pageViewDuration),
                                                   curve: Curves.linear);
                                               value.changeFileVisibilty();
                                             }
@@ -277,9 +277,11 @@ class _EmployeePlanComponentState extends State<EmployeePlanComponent>
                                   controller: _pageController,
                                   children: [
                                     ExpensesList(
+                                        planType: PlanType.employee,
                                         scrollController:
                                             _expensesScrollController),
                                     FoldersList(
+                                        planType: PlanType.employee,
                                         scrollController:
                                             _foldersScrollController),
                                   ],

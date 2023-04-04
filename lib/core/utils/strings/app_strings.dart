@@ -14,10 +14,12 @@ class AppStrings {
   static const String edit = 'Edit';
   static const String addToFolder = 'Add to folder';
   static const String delete = 'Delete';
-  static const String areYouSure = 'Are you sure ?';
+  static const String areYouSureToDeleteIncludeFolders =
+      'Are you sure ? \nNote: It will be deleted from all folders';
   static const String yes = 'Yes';
   static const String cancel = 'Cancel';
   static const String alsoFromFiles = 'Also from files';
+  static const String removeFromFolder = 'Remove from folder';
 
   static const String creatingPlanErrorMessage =
       "Error while creating the plan, please try again";
@@ -27,6 +29,8 @@ class AppStrings {
   static const String withCapitalText = "With";
   static const String addExpenseErrorMessage =
       "Error while Adding expense, please try again";
+  static const String editExpenseErrorMessage =
+      "Error while editing expense, please try again";
   static const String addFolderErrorMessage =
       "Error while Adding folder, please try again";
   static const String intro1 = "you can easily track your income and expenses.";

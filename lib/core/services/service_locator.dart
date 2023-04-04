@@ -4,7 +4,9 @@ import 'package:budgeting_app/home/domain/repository/base_home_repository.dart';
 import 'package:budgeting_app/home/domain/usecases/add_expense_to_folder.dart';
 import 'package:budgeting_app/home/domain/usecases/add_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/add_to_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/delete_expense_from_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/delete_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/edit_expense_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_business_plan_details.usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_employee_plan_details_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_expenses_usecase.dart';
@@ -60,5 +62,9 @@ class ServiceLocator {
         () => AddExpenseToFolderUsecase(getIt()));
     getIt.registerLazySingleton<DeleteExpenseUsecase>(
         () => DeleteExpenseUsecase(getIt()));
+    getIt.registerLazySingleton<RemoveExpenseFromFolderUsecase>(
+        () => RemoveExpenseFromFolderUsecase(getIt()));
+    getIt.registerLazySingleton<EditExpenseUsecase>(
+        () => EditExpenseUsecase(getIt()));
   }
 }

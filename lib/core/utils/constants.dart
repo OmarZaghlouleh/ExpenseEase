@@ -13,4 +13,5 @@ class AppConstants {
   static const String delete = "delete";
   static const String edit = "edit";
   static const String addTofolder = "addTofolder";
+  static const String removeFromFolder = "removeFromFolder";
 }

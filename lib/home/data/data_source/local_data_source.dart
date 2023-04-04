@@ -15,6 +15,7 @@ import 'package:budgeting_app/home/domain/usecases/add_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/add_to_expense_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/delete_expense_from_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/delete_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/edit_expense_usecase.dart';
 
 import 'package:budgeting_app/plans/data/models/business_plan_model.dart';
 import 'package:budgeting_app/plans/data/models/employee_plan_model.dart';
@@ -35,9 +36,12 @@ abstract class BaseHomeLocalDataSource {
 
   Future<void> deleteExpense(
       {required DeleteExpenseUsecaseParameters deleteExpenseUsecaseParameters});
-  Future<void> deleteExpenseFromFolder(
-      {required DeleteExpenseFromFolderUsecaseParameters
-          deleteExpenseFromFolderUsecaseParameters});
+  Future<void> removeExpenseFromFolder(
+      {required RemoveExpenseFromFolderUsecaseParameters
+          removeExpenseFromFolderUsecaseParameters});
+
+  Future<ExpenseModel> editExpense(
+      {required EditExpenseUsecaseParameters editExpenseUsecaseParameters});
 }
 
 class HomeLocalDataSource extends BaseHomeLocalDataSource {
@@ -348,10 +352,99 @@ class HomeLocalDataSource extends BaseHomeLocalDataSource {
   }
 
   @override
-  Future<void> deleteExpenseFromFolder(
-      {required DeleteExpenseFromFolderUsecaseParameters
-          deleteExpenseFromFolderUsecaseParameters}) {
-    // TODO: implement deleteExpenseFromFolder
-    throw UnimplementedError();
+  Future<void> removeExpenseFromFolder(
+      {required RemoveExpenseFromFolderUsecaseParameters
+          removeExpenseFromFolderUsecaseParameters}) async {
+    try {
+      final folderBox = Hive.box(AppConstants.foldersBox);
+      List folderData = getHiveMapValue<List>(
+              key: removeExpenseFromFolderUsecaseParameters.planName,
+              box: folderBox) ??
+          [];
+
+      List<ExpensesFolderModel> newFolders = [];
+      for (var element in folderData) {
+        ExpensesFolderModel expensesFolderModel =
+            ExpensesFolderModel.fromJson(element);
+        if (expensesFolderModel.name ==
+            removeExpenseFromFolderUsecaseParameters.folderName) {
+          expensesFolderModel.expenses.removeWhere((e) {
+            return e.name ==
+                removeExpenseFromFolderUsecaseParameters.expenseName;
+          });
+          folderData.remove(element);
+          folderData.add(expensesFolderModel.toJson());
+          break;
+        }
+      }
+
+      await folderBox.delete(removeExpenseFromFolderUsecaseParameters.planName);
+      await folderBox.put(
+          removeExpenseFromFolderUsecaseParameters.planName, folderData);
+    } catch (e) {
+      debugLog(message: e.toString());
+      throw LocalException(
+          errorModel: const ErrorModel(message: AppStrings.deleteExpenseError));
+    }
+  }
+
+  @override
+  Future<ExpenseModel> editExpense(
+      {required EditExpenseUsecaseParameters
+          editExpenseUsecaseParameters}) async {
+    try {
+      final box = Hive.box(AppConstants.expensesBox);
+      List data = [];
+      final folderBox = Hive.box(AppConstants.foldersBox);
+      List folderData = getHiveMapValue<List>(
+              key: editExpenseUsecaseParameters.planName, box: folderBox) ??
+          [];
+
+      if (box.containsKey(editExpenseUsecaseParameters.planName)) {
+        data = getHiveMapValue(
+            key: editExpenseUsecaseParameters.planName, box: box);
+      }
+
+      ExpenseModel expenseModel = ExpenseModel(
+          name: editExpenseUsecaseParameters.newName,
+          paid: editExpenseUsecaseParameters.newValue);
+      data.removeWhere((element) =>
+          ExpenseModel.fromJson(element).name ==
+          editExpenseUsecaseParameters.oldName);
+      data.add(expenseModel.toJson());
+      box.delete(editExpenseUsecaseParameters.planName);
+      await box.put(editExpenseUsecaseParameters.planName, data);
+
+      List<ExpensesFolderModel> newFolders = [];
+      for (var element in folderData) {
+        ExpensesFolderModel expensesFolderModel =
+            ExpensesFolderModel.fromJson(element);
+
+        int oldIndex = expensesFolderModel.expenses.indexWhere((e) {
+          return e.name == editExpenseUsecaseParameters.oldName;
+        });
+        expensesFolderModel.expenses.removeWhere((e) {
+          return e.name == editExpenseUsecaseParameters.oldName;
+        });
+        expensesFolderModel.expenses.insert(oldIndex, expenseModel);
+        newFolders.add(expensesFolderModel);
+      }
+      folderData.clear();
+      for (var element in newFolders) {
+        folderData.add(element.toJson());
+      }
+      await folderBox.delete(editExpenseUsecaseParameters.planName);
+      await folderBox.put(editExpenseUsecaseParameters.planName, folderData);
+
+      return expenseModel;
+    } catch (e) {
+      debugLog(message: e.toString());
+
+      throw LocalException(
+          errorModel: ErrorModel(
+              message: e.runtimeType == LocalException
+                  ? (e as LocalException).errorModel.message
+                  : AppStrings.addExpenseErrorMessage));
+    }
   }
 }
