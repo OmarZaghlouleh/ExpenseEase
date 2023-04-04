@@ -11,6 +11,13 @@ class AppStrings {
   static const String addExpense = '+ Expense';
   static const String addFolder = '+ Folder';
   static const String folders = 'Folders';
+  static const String edit = 'Edit';
+  static const String addToFolder = 'Add to folder';
+  static const String delete = 'Delete';
+  static const String areYouSure = 'Are you sure ?';
+  static const String yes = 'Yes';
+  static const String cancel = 'Cancel';
+  static const String alsoFromFiles = 'Also from files';
 
   static const String creatingPlanErrorMessage =
       "Error while creating the plan, please try again";
@@ -29,7 +36,8 @@ class AppStrings {
       "Our intuitive interface and powerful features make it easy to stay on top of your finances, so you can achieve your financial goals faster.";
   static const String intro4 =
       "Whether you're saving up for a down payment on a house, paying off debt, or just looking to take control of your money, ExpenseEase has everything you need to succeed. Start your journey to financial freedom today!";
-
+  static const String deleteExpenseError =
+      "Something went wrong while deleting expense";
   static const String swipeUpToSkip = "Swipe up to skip";
   static const String gettingStarted = "Getting started";
   static const String selectYourPlan = "Select your plan";
@@ -61,4 +69,15 @@ class AppStrings {
 
   static String getCurrentDate() =>
       "${DateTime.now().month}/${DateTime.now().day}";
+
+  static String isAlreadyExistErrorMessage({required String name}) =>
+      "$name is already exist, try another name";
+
+  static String addToFolderError(
+          {required String folderName, required String movedName}) =>
+      "Something wentwrong while adding $movedName to $folderName";
+
+  static String expenseIsAlreadyExistInFolder(
+          {required String folderName, required String movedName}) =>
+      "Expense $movedName is already exist in folder $folderName";
 }

@@ -23,7 +23,7 @@ void main() async {
   await Hive.openBox(AppConstants.expensesBox);
   await Hive.openBox(AppConstants.incomesBox);
   await Hive.openBox(AppConstants.foldersBox);
-  //await Hive.box(AppConstants.expensesBox).clear();
+  //await Hive.box(AppConstants.foldersBox).clear();
   log(Hive.box(AppConstants.expensesBox).toMap().toString());
 
   runApp(const BudgetingApp());

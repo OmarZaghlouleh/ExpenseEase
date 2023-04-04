@@ -1,11 +1,9 @@
 import 'package:budgeting_app/core/error/failure.dart';
 import 'package:budgeting_app/home/data/models/expense_model.dart';
+import 'package:budgeting_app/home/data/models/folder_model.dart';
 import 'package:budgeting_app/home/domain/entities/expense_entity.dart';
 import 'package:budgeting_app/home/domain/entities/expenses_folder_entity.dart';
-import 'package:budgeting_app/home/domain/entities/income_entity.dart';
 
-import 'package:budgeting_app/plans/data/models/business_plan_model.dart';
-import 'package:budgeting_app/plans/data/models/employee_plan_model.dart';
 import 'package:budgeting_app/plans/domain/entities/business_plan_entity.dart';
 import 'package:budgeting_app/plans/domain/entities/employee_plan_entity.dart';
 
@@ -22,7 +20,23 @@ abstract class BaseHomeRepository {
   Future<Either<Failure, ExpensesFolderEntity>> addExpensesFolder(
       {required String name,
       required String planName,
-      required List<ExpenseEntity> expenses});
+      required List<ExpenseModel> expenses});
   Either<Failure, List<ExpensesFolderEntity>> getExpensesFolders(
       {required String planName});
+
+  Future<Either<Failure, ExpensesFolderModel>> addExpenseToFolder(
+      {required String planName,
+      required ExpenseModel expenseModel,
+      required String folderName});
+
+  Future<Either<Failure, void>> deleteExpense({
+    required String planName,
+    required String expenseName,
+    required bool alsoFromFiles,
+  });
+  Future<Either<Failure, void>> deleteExpenseFromFolder({
+    required String planName,
+    required String expenseName,
+    required String folderName,
+  });
 }

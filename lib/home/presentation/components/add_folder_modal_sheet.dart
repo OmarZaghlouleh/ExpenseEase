@@ -2,7 +2,6 @@ import 'package:budgeting_app/core/functions/media_query.dart';
 import 'package:budgeting_app/core/utils/colors/app_light_colors.dart';
 import 'package:budgeting_app/core/utils/enums.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
-import 'package:budgeting_app/core/widgets/syrian_pound_icon.dart';
 import 'package:budgeting_app/core/widgets/text_field_widget.dart';
 import 'package:budgeting_app/home/presentation/controller/employee_provider.dart';
 import 'package:flutter/material.dart';
@@ -37,30 +36,31 @@ void showFolderModalSheet({
                 label: AppStrings.name,
                 textInputType: TextInputType.name,
                 validation: (value) {
-                  if (value == null) return AppStrings.invalid;
+                  if (value == null || value.isEmpty) return AppStrings.invalid;
                 }),
             ElevatedButton(
-                onPressed: () async {
-                  if (formKey.currentState!.validate()) {
-                    Navigator.pop(ctx);
-                    switch (planType) {
-                      case PlanType.employee:
-                        await Provider.of<EmployeeProvider>(context,
-                                listen: false)
-                            .addFolder(
-                          context: context,
-                          name: nameController.text.trim(),
-                        );
-                        break;
-                      case PlanType.business:
-                        break;
-                      case PlanType.none:
-                        return;
-                    }
-                    nameController.clear();
+              onPressed: () async {
+                if (formKey.currentState!.validate()) {
+                  Navigator.pop(ctx);
+                  switch (planType) {
+                    case PlanType.employee:
+                      await Provider.of<EmployeeProvider>(context,
+                              listen: false)
+                          .addFolder(
+                        context: context,
+                        name: nameController.text.trim(),
+                      );
+                      break;
+                    case PlanType.business:
+                      break;
+                    case PlanType.none:
+                      return;
                   }
-                },
-                child: const Text(AppStrings.add))
+                  nameController.clear();
+                }
+              },
+              child: const Text(AppStrings.add),
+            )
           ],
         ),
       ),

@@ -6,10 +6,13 @@ import 'package:budgeting_app/core/functions/general.dart';
 import 'package:budgeting_app/core/services/service_locator.dart';
 import 'package:budgeting_app/core/utils/durations/animation_duration.dart';
 import 'package:budgeting_app/core/widgets/dialogs/error_dialog.dart';
+import 'package:budgeting_app/home/data/models/expense_model.dart';
 import 'package:budgeting_app/home/domain/entities/expense_entity.dart';
 import 'package:budgeting_app/home/domain/entities/expenses_folder_entity.dart';
+import 'package:budgeting_app/home/domain/usecases/add_expense_to_folder.dart';
 import 'package:budgeting_app/home/domain/usecases/add_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/add_to_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/delete_expense_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_employee_plan_details_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_expenses_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_folders_usecase.dart';
@@ -22,11 +25,25 @@ class EmployeeProvider extends ChangeNotifier {
   Percent _percent = Percent.empty();
   List<ExpenseEntity> _expenses = [];
   List<ExpensesFolderEntity> _folders = [];
+  final List<String> _foldersToAddTo = [];
   bool _isGettingExpenses = false;
   bool _isGettingFolders = false;
   bool _isFloatingActionButtonOpened = false;
   bool _isDragging = false;
   bool _isFileVisible = false;
+
+  void addFolderToAddTo({required String name}) {
+    if (_foldersToAddTo.contains(name)) {
+      _foldersToAddTo.remove(name);
+    } else {
+      _foldersToAddTo.add(name);
+    }
+    notifyListeners();
+  }
+
+  void clearFoldersToAddTo() {
+    _foldersToAddTo.clear();
+  }
 
   void triggerFileVisibility({required PageController pageController}) {
     _isFileVisible = !_isFileVisible;
@@ -39,6 +56,11 @@ class EmployeeProvider extends ChangeNotifier {
           duration: const Duration(milliseconds: AnimationDuration.d500),
           curve: Curves.linear);
     }
+    notifyListeners();
+  }
+
+  void changeFileVisibilty() {
+    _isFileVisible = !_isFileVisible;
     notifyListeners();
   }
 
@@ -137,10 +159,53 @@ class EmployeeProvider extends ChangeNotifier {
     });
   }
 
+  Future<void> addExpenseToFolder(
+      {required ExpenseModel expenseModel,
+      required BuildContext context}) async {
+    List<ExpensesFolderEntity> newFolders = [];
+    for (var element in getFoldersToAddTo) {
+      final result = await getIt<AddExpenseToFolderUsecase>().call(
+          AddExpenseToFolderParameters(
+              planName: getEmployeePlanModel.name,
+              expenseModel: expenseModel,
+              folderName: element));
+
+      result.fold((l) {
+        showErrorDialog(context: context, message: l.message);
+      }, (r) {
+        newFolders.add(r);
+      });
+    }
+    for (var element in newFolders) {
+      getFolders.removeWhere((element2) => element2.name == element.name);
+      _folders.add(element);
+    }
+  }
+
+  Future<void> deleteExpense(
+      {required String expenseName, required BuildContext context}) async {
+    final result = await getIt<DeleteExpenseUsecase>().call(
+        DeleteExpenseUsecaseParameters(
+            planName: getEmployeePlanModel.name,
+            expenseName: expenseName,
+            alsoFromFiles: false));
+
+    result.fold((l) {
+      showErrorDialog(context: context, message: l.message);
+    }, (r) {
+      getExpenses.removeWhere((element) => element.name == expenseName);
+      for (var element in getFolders) {
+        element.expenses.removeWhere((element) => element.name == expenseName);
+      }
+      notifyListeners();
+    });
+  }
+
   EmployeePlanEntity get getEmployeePlanModel => _employeePlanModel;
   Percent get getPercent => _percent;
   List<ExpenseEntity> get getExpenses => _expenses;
   List<ExpensesFolderEntity> get getFolders => _folders;
+  List<String> get getFoldersToAddTo => _foldersToAddTo;
 
   bool get getGettingExpensesState => _isGettingExpenses;
   bool get getGettingFoldersState => _isGettingFolders;

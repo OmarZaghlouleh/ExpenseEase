@@ -10,4 +10,7 @@ class AppConstants {
   static const String foldersBox = "foldersBox";
   static const String expenseKey = "expense";
   static const String incomeKey = "income";
+  static const String delete = "delete";
+  static const String edit = "edit";
+  static const String addTofolder = "addTofolder";
 }

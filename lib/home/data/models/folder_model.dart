@@ -1,9 +1,8 @@
+import 'dart:developer';
+
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
 import 'package:budgeting_app/home/data/models/expense_model.dart';
-import 'package:budgeting_app/home/domain/entities/expense_entity.dart';
 import 'package:budgeting_app/home/domain/entities/expenses_folder_entity.dart';
-import 'package:budgeting_app/home/domain/entities/income_entity.dart';
-import 'package:dartz/dartz.dart';
 
 class ExpensesFolderModel extends ExpensesFolderEntity {
   const ExpensesFolderModel({
@@ -12,23 +11,30 @@ class ExpensesFolderModel extends ExpensesFolderEntity {
   });
 
   factory ExpensesFolderModel.fromJson(Map<dynamic, dynamic> json) {
-    List items = json['items'];
+    log(json.toString());
+    List items = json['items'] ?? [];
 
     List<ExpenseModel> expesnesItems = [];
 
-    items.forEach((element) {
+    for (var element in items) {
       expesnesItems.add(ExpenseModel.fromJson(element));
-    });
+    }
 
-    items.forEach((e) {});
     return ExpensesFolderModel(
       name: json['name'] ?? AppStrings.emptyString,
       expenses: expesnesItems,
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'items': ExpensesFolderEntity,
-      };
+  Map<String, dynamic> toJson() {
+    List expensesJson = [];
+
+    for (var element in expenses) {
+      expensesJson.add(element.toJson());
+    }
+    return {
+      'name': name,
+      'items': expensesJson,
+    };
+  }
 }
