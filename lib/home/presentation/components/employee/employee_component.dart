@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:math';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:budgeting_app/core/extensions/sizedbox_extension.dart';
 import 'package:budgeting_app/core/functions/general.dart';
 import 'package:budgeting_app/core/functions/get_widget_location.dart';
@@ -67,32 +68,6 @@ class _EmployeePlanComponentState extends State<EmployeePlanComponent>
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        //floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-
-        // InkWell(
-        //   onTap: () {
-        //     showAddExpenseModalSheet(
-        //         planType: PlanType.employee,
-        //         context: context,
-        //         namecontroller: _nameController,
-        //         valueController: _valueController,
-        //         currencyType:
-        //             Provider.of<EmployeeProvider>(context, listen: false)
-        //                 .getEmployeePlanModel
-        //                 .currencyType);
-        //   },
-        //   child: Container(
-        //     decoration: BoxDecoration(
-        //         borderRadius: BorderRadius.circular(AppRadius.r8),
-        //         color: AppLightColors.primaryLightColor),
-        //     width: AppSizes.spaceSize60,
-        //     height: AppSizes.spaceSize30,
-        //     child: const Icon(
-        //       Icons.add,
-        //       color: AppLightColors.floatingIconColor,
-        //     ),
-        //   ),
-        // ),
         drawer: const Drawer(),
         body: Stack(
           children: [
@@ -221,26 +196,18 @@ class _EmployeePlanComponentState extends State<EmployeePlanComponent>
                                           MainAxisAlignment.start,
                                       children: [
                                         TextButton(
-                                            onPressed: () {
-                                              showFolderModalSheet(
-                                                  context: context,
-                                                  planType: PlanType.employee);
-                                            },
-                                            child: const Text(
-                                                AppStrings.addFolder)),
-                                        const SizedBox(
-                                          height: AppSizes.spaceSize25,
-                                          child: VerticalDivider(
-                                            color: AppLightColors
-                                                .verticalDividerColorForWhiteBackground,
-                                          ),
-                                        ),
-                                        TextButton(
                                           onPressed: () {
+                                            if (_pageController.page != 0) {
+                                              _pageController.previousPage(
+                                                  duration: const Duration(
+                                                      milliseconds:
+                                                          AnimationDuration
+                                                              .d500),
+                                                  curve: Curves.linear);
+                                              value.changeFileVisibilty();
+                                            }
                                             showAddExpenseModalSheet(
                                                 context: context,
-                                                // namecontroller: _nameController,
-                                                // valueController: _valueController,
                                                 currencyType: value
                                                     .getEmployeePlanModel
                                                     .currencyType,
@@ -250,32 +217,58 @@ class _EmployeePlanComponentState extends State<EmployeePlanComponent>
                                               const Text(AppStrings.addExpense),
                                         ),
                                         const SizedBox(
-                                          height: AppSizes.spaceSize25,
+                                          height: AppSizes.spaceSize20,
                                           child: VerticalDivider(
                                             color: AppLightColors
                                                 .verticalDividerColorForWhiteBackground,
                                           ),
                                         ),
+                                        TextButton(
+                                          onPressed: () {
+                                            if (_pageController.page == 0) {
+                                              _pageController.nextPage(
+                                                  duration: const Duration(
+                                                      milliseconds:
+                                                          AnimationDuration
+                                                              .d500),
+                                                  curve: Curves.linear);
+                                              value.changeFileVisibilty();
+                                            }
+                                            showFolderModalSheet(
+                                                context: context,
+                                                planType: PlanType.employee);
+                                          },
+                                          child: Text(
+                                            AppStrings.addFolder,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelLarge!
+                                                .copyWith(
+                                                    color: AppLightColors
+                                                        .blueColor,
+                                                    fontSize: FontSizes
+                                                        .buttonFontSize),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     Consumer<EmployeeProvider>(
-                                        builder: (context, value, child) =>
-                                            InkWell(
-                                              onTap: () {
-                                                value.triggerFileVisibility(
-                                                    pageController:
-                                                        _pageController);
-                                              },
-                                              child: Icon(
-                                                value.getFileVisibility
-                                                    ? Icons.folder_rounded
-                                                    : Icons.menu,
-                                                color: value.getFileVisibility
-                                                    ? AppLightColors.blueColor
-                                                    : AppLightColors
-                                                        .primaryLightColor,
-                                              ),
-                                            )),
+                                      builder: (context, value, child) =>
+                                          InkWell(
+                                        onTap: () {
+                                          value.triggerFileVisibility(
+                                              pageController: _pageController);
+                                        },
+                                        child: Icon(
+                                          value.getFileVisibility
+                                              ? Icons.menu
+                                              : Icons.folder_rounded,
+                                          color: value.getFileVisibility
+                                              ? AppLightColors.primaryLightColor
+                                              : AppLightColors.blueColor,
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -301,9 +294,9 @@ class _EmployeePlanComponentState extends State<EmployeePlanComponent>
                 ]),
               ),
             ),
-            if (getMediaQueryInstance(context: context).orientation ==
-                Orientation.portrait)
-              const CustomFloatingActionbutton()
+            // if (getMediaQueryInstance(context: context).orientation ==
+            //     Orientation.portrait)
+            //   const CustomFloatingActionbutton()
           ],
         ),
       ),

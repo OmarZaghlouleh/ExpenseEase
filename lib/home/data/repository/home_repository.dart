@@ -3,12 +3,13 @@ import 'package:budgeting_app/core/error/local_exception.dart';
 import 'package:budgeting_app/home/data/data_source/local_data_source.dart';
 import 'package:budgeting_app/home/data/models/expense_model.dart';
 import 'package:budgeting_app/home/data/models/folder_model.dart';
-import 'package:budgeting_app/home/domain/entities/income_entity.dart';
 import 'package:budgeting_app/home/domain/entities/expenses_folder_entity.dart';
 import 'package:budgeting_app/home/domain/entities/expense_entity.dart';
 import 'package:budgeting_app/home/domain/repository/base_home_repository.dart';
+import 'package:budgeting_app/home/domain/usecases/add_expense_to_folder.dart';
 import 'package:budgeting_app/home/domain/usecases/add_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/add_to_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/delete_expense_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:budgeting_app/plans/data/models/employee_plan_model.dart';
 import 'package:budgeting_app/plans/data/models/business_plan_model.dart';
@@ -71,7 +72,7 @@ class HomeRepository implements BaseHomeRepository {
   Future<Either<Failure, ExpensesFolderEntity>> addExpensesFolder(
       {required String name,
       required String planName,
-      required List<ExpenseEntity> expenses}) async {
+      required List<ExpenseModel> expenses}) async {
     try {
       ExpensesFolderModel folderModel =
           await baseHomeLocalDataSource.addExpensesFolder(
@@ -93,5 +94,49 @@ class HomeRepository implements BaseHomeRepository {
     } on LocalException catch (e) {
       return Left(LocalFailure(message: e.errorModel.message));
     }
+  }
+
+  @override
+  Future<Either<Failure, ExpensesFolderModel>> addExpenseToFolder(
+      {required String planName,
+      required ExpenseModel expenseModel,
+      required String folderName}) async {
+    try {
+      ExpensesFolderModel folderModel =
+          await baseHomeLocalDataSource.addExpenseToFolder(
+              addExpenseToFolderParameters: AddExpenseToFolderParameters(
+                  planName: planName,
+                  expenseModel: expenseModel,
+                  folderName: folderName));
+      return Right(folderModel);
+    } on LocalException catch (e) {
+      return Left(LocalFailure(message: e.errorModel.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteExpense(
+      {required String planName,
+      required String expenseName,
+      required bool alsoFromFiles}) async {
+    try {
+      await baseHomeLocalDataSource.deleteExpense(
+          deleteExpenseUsecaseParameters: DeleteExpenseUsecaseParameters(
+              planName: planName,
+              expenseName: expenseName,
+              alsoFromFiles: alsoFromFiles));
+      return const Right(null);
+    } on LocalException catch (e) {
+      return Left(LocalFailure(message: e.errorModel.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteExpenseFromFolder(
+      {required String planName,
+      required String expenseName,
+      required String folderName}) {
+    // TODO: implement deleteExpenseFromFolder
+    throw UnimplementedError();
   }
 }

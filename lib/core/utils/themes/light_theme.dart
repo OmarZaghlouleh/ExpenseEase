@@ -157,6 +157,12 @@ ThemeData getLightTheme() => ThemeData(
           fontWeight: FontWeight.w500,
         ),
 
+        headlineSmall: GoogleFonts.inconsolata(
+          color: AppLightColors.popUpRowColor,
+          fontSize: FontSizes.popUpTitleFontSize,
+          fontWeight: FontWeight.w500,
+        ),
+
         //Splash Text
         headlineLarge: GoogleFonts.inconsolata(
           color: AppLightColors.splashTitleColor,
