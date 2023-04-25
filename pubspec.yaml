@@ -49,6 +49,7 @@ dependencies:
   flutter_svg: ^2.0.2
   lottie: ^2.2.0
   percent_indicator: ^4.2.3
+  flutter_slidable: ^3.0.0
   
 
 

@@ -24,6 +24,7 @@ import 'package:hive/hive.dart';
 abstract class BaseHomeLocalDataSource {
   EmployeePlanModel getEmployeePlanDetails({required String planName});
   BusinessPlanModel getBusinessPlanDetails({required String planName});
+
   List<ExpenseModel> getExpesnes({required String planName});
   Future<ExpenseModel> addToExpense(
       {required AddToExpenseParameters addToExpenseParameters});
@@ -423,18 +424,21 @@ class HomeLocalDataSource extends BaseHomeLocalDataSource {
         int oldIndex = expensesFolderModel.expenses.indexWhere((e) {
           return e.name == editExpenseUsecaseParameters.oldName;
         });
-        expensesFolderModel.expenses.removeWhere((e) {
-          return e.name == editExpenseUsecaseParameters.oldName;
-        });
-        expensesFolderModel.expenses.insert(oldIndex, expenseModel);
-        newFolders.add(expensesFolderModel);
+
+        if (oldIndex >= 0) {
+          expensesFolderModel.expenses.removeWhere((e) {
+            return e.name == editExpenseUsecaseParameters.oldName;
+          });
+          expensesFolderModel.expenses.insert(oldIndex, expenseModel);
+          newFolders.add(expensesFolderModel);
+        }
+        folderData.clear();
+        for (var element in newFolders) {
+          folderData.add(element.toJson());
+        }
+        await folderBox.delete(editExpenseUsecaseParameters.planName);
+        await folderBox.put(editExpenseUsecaseParameters.planName, folderData);
       }
-      folderData.clear();
-      for (var element in newFolders) {
-        folderData.add(element.toJson());
-      }
-      await folderBox.delete(editExpenseUsecaseParameters.planName);
-      await folderBox.put(editExpenseUsecaseParameters.planName, folderData);
 
       return expenseModel;
     } catch (e) {

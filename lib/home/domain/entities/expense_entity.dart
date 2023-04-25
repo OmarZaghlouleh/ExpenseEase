@@ -5,7 +5,10 @@ class ExpenseEntity extends Equatable {
   final String name;
   final double paid;
 
-  const ExpenseEntity({required this.name, required this.paid});
+  const ExpenseEntity({
+    required this.name,
+    required this.paid,
+  });
 
   @override
   List<Object> get props => [name, paid];
