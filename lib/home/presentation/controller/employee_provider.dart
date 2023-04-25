@@ -34,6 +34,13 @@ class EmployeeProvider extends ChangeNotifier {
   bool _isDragging = false;
   bool _isFileVisible = false;
 
+  void reorderExpenses({required int oldIndex, required int newIndex}) {
+    if (oldIndex < newIndex) newIndex--;
+    final expense = _expenses.removeAt(oldIndex);
+    _expenses.insert(newIndex, expense);
+    notifyListeners();
+  }
+
   void addFolderToAddTo({required String name}) {
     if (_foldersToAddTo.contains(name)) {
       _foldersToAddTo.remove(name);
@@ -186,8 +193,8 @@ class EmployeeProvider extends ChangeNotifier {
             element.expenses.indexWhere((element) => element.name == oldName);
         element.expenses.removeWhere((element) => element.name == oldName);
         element.expenses.insert(oldIndex, r);
-        notifyListeners();
       }
+      notifyListeners();
     });
   }
 
