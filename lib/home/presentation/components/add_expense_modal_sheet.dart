@@ -43,6 +43,7 @@ void showAddExpenseModalSheet(
                 textInputType: TextInputType.name,
                 validation: (value) {
                   if (value == null) return AppStrings.invalid;
+                  return null;
                 }),
             CustomTextField(
                 controller: valueController,
@@ -55,6 +56,7 @@ void showAddExpenseModalSheet(
                   if (double.tryParse(value ?? "") == null) {
                     return AppStrings.invalid;
                   }
+                  return null;
                 }),
             Padding(
               padding: const EdgeInsets.all(AppPaddings.p8),

@@ -7,6 +7,7 @@ import 'package:budgeting_app/core/services/service_locator.dart';
 import 'package:budgeting_app/core/utils/durations/animation_duration.dart';
 import 'package:budgeting_app/core/widgets/dialogs/error_dialog.dart';
 import 'package:budgeting_app/home/data/models/expense_model.dart';
+import 'package:budgeting_app/home/data/models/folder_model.dart';
 import 'package:budgeting_app/home/domain/entities/expense_entity.dart';
 import 'package:budgeting_app/home/domain/entities/expenses_folder_entity.dart';
 import 'package:budgeting_app/home/domain/usecases/add_expense_to_folder.dart';
@@ -14,7 +15,9 @@ import 'package:budgeting_app/home/domain/usecases/add_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/add_to_expense_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/delete_expense_from_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/delete_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/delete_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/edit_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/edit_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_employee_plan_details_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_expenses_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_folders_usecase.dart';
@@ -23,6 +26,7 @@ import 'package:budgeting_app/plans/domain/entities/employee_plan_entity.dart';
 import 'package:flutter/material.dart';
 
 class EmployeeProvider extends ChangeNotifier {
+  //Vars
   EmployeePlanEntity _employeePlanModel = EmployeePlanModel.empty();
   Percent _percent = Percent.empty();
   List<ExpenseEntity> _expenses = [];
@@ -33,6 +37,8 @@ class EmployeeProvider extends ChangeNotifier {
   bool _isFloatingActionButtonOpened = false;
   bool _isDragging = false;
   bool _isFileVisible = false;
+
+  //Setters
 
   void reorderExpenses({required int oldIndex, required int newIndex}) {
     if (oldIndex < newIndex) newIndex--;
@@ -128,7 +134,9 @@ class EmployeeProvider extends ChangeNotifier {
       {required String name, required BuildContext context}) async {
     final result = await getIt<AddExpensesFolderUsecase>().call(
         AddExpesnesFolderUsecaseParameters(
-            name: name, planName: getEmployeePlanModel.name, expenses: []));
+            name: name,
+            planName: getEmployeePlanModel.name,
+            expenses: const []));
 
     result.fold((l) {
       showErrorDialog(context: context, message: l.message);
@@ -240,6 +248,48 @@ class EmployeeProvider extends ChangeNotifier {
     });
   }
 
+  Future<void> deleteFolder(
+      {required String folderName, required BuildContext context}) async {
+    final result = await getIt<DeleteFolderUsecase>().call(
+      DeleteFolderUsecaseParameters(
+        planName: getEmployeePlanModel.name,
+        folderName: folderName,
+      ),
+    );
+
+    result.fold((l) {
+      showErrorDialog(context: context, message: l.message);
+    }, (r) {
+      getFolders.removeWhere((element) => element.name == folderName);
+
+      notifyListeners();
+    });
+  }
+
+  Future<void> editFolder(
+      {required ExpensesFolderEntity folderModel,
+      required String newName,
+      required BuildContext context}) async {
+    final result = await getIt<EditFolderUsecase>().call(
+      EditFolderUsecaseParameters(
+          planName: getEmployeePlanModel.name,
+          newName: newName,
+          oldName: folderModel.name,
+          expenses: folderModel.expenses),
+    );
+
+    result.fold((l) {
+      showErrorDialog(context: context, message: l.message);
+    }, (r) {
+      int index =
+          getFolders.indexWhere((element) => element.name == folderModel.name);
+      getFolders.removeAt(index);
+      getFolders.insert(index, r);
+
+      notifyListeners();
+    });
+  }
+
   Future<void> removeExpenseFromFolder(
       {required String expenseName,
       required String folderName,
@@ -260,6 +310,8 @@ class EmployeeProvider extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+  //Getters
 
   EmployeePlanEntity get getEmployeePlanModel => _employeePlanModel;
   Percent get getPercent => _percent;

@@ -9,6 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
+clean.bat
 
 # IntelliJ related
 *.iml

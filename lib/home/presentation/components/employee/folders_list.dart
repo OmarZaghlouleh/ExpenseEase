@@ -1,7 +1,5 @@
-import 'package:budgeting_app/core/utils/colors/app_light_colors.dart';
 import 'package:budgeting_app/core/utils/enums.dart';
-import 'package:budgeting_app/core/utils/sizes/elevations.dart';
-import 'package:budgeting_app/home/presentation/components/employee/expense_card.dart';
+import 'package:budgeting_app/home/presentation/components/employee/folder_card.dart';
 import 'package:budgeting_app/home/presentation/controller/employee_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -22,39 +20,14 @@ class FoldersList extends StatelessWidget {
         child: ListView(
           controller: scrollController,
           physics: const BouncingScrollPhysics(),
-          children: value.getFolders.reversed.map((folder) {
-            return SizedBox(
-              //height: AppSizes.spaceSize65,
-              child: Card(
-                shadowColor: AppLightColors.primaryLightColor,
-                elevation: AppElevation.e2,
-                child: ExpansionTile(
-                  leading: const Icon(
-                    Icons.folder_rounded,
-                    color: AppLightColors.blueColor,
-                  ),
-                  title: Text(
-                    folder.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayMedium!
-                        .copyWith(color: AppLightColors.blueColor),
-                  ),
-                  children: folder.expenses.reversed
-                      .map<Widget>(
-                        (expense) => ExpenseCard(
-                          expense: expense,
-                          value: value,
-                          inFolder: true,
-                          folderName: folder.name,
-                          planType: planType,
-                        ),
-                      )
-                      .toList(),
+          children: value.getFolders.reversed
+              .map(
+                (folder) => FolderCard(
+                  folder: folder,
+                  employeeProvider: value,
                 ),
-              ),
-            );
-          }).toList(),
+              )
+              .toList(),
         ),
       ),
     );

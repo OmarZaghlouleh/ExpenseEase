@@ -61,7 +61,8 @@ class PlanDetailsSection extends StatelessWidget {
                 ),
                 onPressed: () {
                   pageController.previousPage(
-                      duration: Duration(milliseconds: AnimationDuration.d300),
+                      duration:
+                          const Duration(milliseconds: AnimationDuration.d300),
                       curve: Curves.linear);
                 },
               ),

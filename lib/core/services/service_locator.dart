@@ -1,12 +1,10 @@
 import 'package:budgeting_app/home/data/data_source/local_data_source.dart';
 import 'package:budgeting_app/home/data/repository/home_repository.dart';
 import 'package:budgeting_app/home/domain/repository/base_home_repository.dart';
-import 'package:budgeting_app/home/domain/usecases/add_expense_to_folder.dart';
 import 'package:budgeting_app/home/domain/usecases/add_folder_usecase.dart';
-import 'package:budgeting_app/home/domain/usecases/add_to_expense_usecase.dart';
-import 'package:budgeting_app/home/domain/usecases/delete_expense_from_folder_usecase.dart';
-import 'package:budgeting_app/home/domain/usecases/delete_expense_usecase.dart';
-import 'package:budgeting_app/home/domain/usecases/edit_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/delete_folder_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/edit_folder_usecase.dart';
+
 import 'package:budgeting_app/home/domain/usecases/get_business_plan_details.usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_employee_plan_details_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/get_expenses_usecase.dart';
@@ -19,6 +17,12 @@ import 'package:budgeting_app/plans/domain/usecases/create_employee_plan_usecase
 import 'package:budgeting_app/plans/domain/usecases/set_created_plan_status_usecase.dart';
 import 'package:budgeting_app/plans/domain/usecases/set_intro_status_usecase.dart';
 import 'package:get_it/get_it.dart';
+
+import 'package:budgeting_app/home/domain/usecases/add_expense_to_folder.dart';
+import 'package:budgeting_app/home/domain/usecases/add_to_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/delete_expense_from_folder_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/delete_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/edit_expense_usecase.dart';
 
 final getIt = GetIt.instance;
 
@@ -66,5 +70,9 @@ class ServiceLocator {
         () => RemoveExpenseFromFolderUsecase(getIt()));
     getIt.registerLazySingleton<EditExpenseUsecase>(
         () => EditExpenseUsecase(getIt()));
+    getIt.registerLazySingleton<DeleteFolderUsecase>(
+        () => DeleteFolderUsecase(getIt()));
+    getIt.registerLazySingleton<EditFolderUsecase>(
+        () => EditFolderUsecase(getIt()));
   }
 }
