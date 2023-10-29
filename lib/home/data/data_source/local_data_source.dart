@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:budgeting_app/core/error/error_model.dart';
 import 'package:budgeting_app/core/error/local_exception.dart';
@@ -15,7 +14,9 @@ import 'package:budgeting_app/home/domain/usecases/add_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/add_to_expense_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/delete_expense_from_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/delete_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/delete_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/edit_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/edit_folder_usecase.dart';
 
 import 'package:budgeting_app/plans/data/models/business_plan_model.dart';
 import 'package:budgeting_app/plans/data/models/employee_plan_model.dart';
@@ -43,6 +44,11 @@ abstract class BaseHomeLocalDataSource {
 
   Future<ExpenseModel> editExpense(
       {required EditExpenseUsecaseParameters editExpenseUsecaseParameters});
+
+  Future<void> deleteFolder(
+      {required DeleteFolderUsecaseParameters deleteFolderUsecaseParameters});
+  Future<ExpensesFolderModel> editFolder(
+      {required EditFolderUsecaseParameters editFolderUsecaseParameters});
 }
 
 class HomeLocalDataSource extends BaseHomeLocalDataSource {
@@ -215,6 +221,7 @@ class HomeLocalDataSource extends BaseHomeLocalDataSource {
       return folderModel;
     } catch (e) {
       debugLog(message: e.toString());
+      if (e is LocalException) rethrow;
 
       throw LocalException(
           errorModel:
@@ -441,6 +448,69 @@ class HomeLocalDataSource extends BaseHomeLocalDataSource {
       }
 
       return expenseModel;
+    } catch (e) {
+      debugLog(message: e.toString());
+
+      throw LocalException(
+          errorModel: ErrorModel(
+              message: e.runtimeType == LocalException
+                  ? (e as LocalException).errorModel.message
+                  : AppStrings.addExpenseErrorMessage));
+    }
+  }
+
+  @override
+  Future<void> deleteFolder(
+      {required DeleteFolderUsecaseParameters
+          deleteFolderUsecaseParameters}) async {
+    try {
+      final folderBox = Hive.box(AppConstants.foldersBox);
+      List folderData = getHiveMapValue<List>(
+              key: deleteFolderUsecaseParameters.planName, box: folderBox) ??
+          [];
+
+      List newFolders =
+          folderData.map((e) => ExpensesFolderModel.fromJson(e)).toList();
+      newFolders.removeWhere((element) =>
+          element.name == deleteFolderUsecaseParameters.folderName);
+
+      await folderBox.delete(deleteFolderUsecaseParameters.planName);
+      await folderBox.put(deleteFolderUsecaseParameters.planName, newFolders);
+    } catch (e) {
+      debugLog(message: e.toString());
+      throw LocalException(
+          errorModel: const ErrorModel(message: AppStrings.deleteFolderError));
+    }
+  }
+
+  @override
+  Future<ExpensesFolderModel> editFolder(
+      {required EditFolderUsecaseParameters
+          editFolderUsecaseParameters}) async {
+    try {
+      List data = [];
+      final folderBox = Hive.box(AppConstants.foldersBox);
+      // List folderData = getHiveMapValue<List>(
+      //         key: editFolderUsecaseParameters.planName, box: folderBox) ??
+      //     [];
+
+      if (folderBox.containsKey(editFolderUsecaseParameters.planName)) {
+        data = getHiveMapValue(
+                key: editFolderUsecaseParameters.planName, box: folderBox) ??
+            [];
+      }
+      ExpensesFolderModel newFolder = ExpensesFolderModel(
+          name: editFolderUsecaseParameters.newName,
+          expenses: editFolderUsecaseParameters.expenses);
+      int index = data.indexWhere((element) =>
+          ExpensesFolderModel.fromJson(element).name ==
+          editFolderUsecaseParameters.oldName);
+      data.removeAt(index);
+      data.insert(index, newFolder.toJson());
+
+      await folderBox.delete(editFolderUsecaseParameters.planName);
+      await folderBox.put(editFolderUsecaseParameters.planName, data);
+      return newFolder;
     } catch (e) {
       debugLog(message: e.toString());
 

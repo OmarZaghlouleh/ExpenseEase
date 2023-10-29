@@ -1,28 +1,17 @@
-import 'dart:developer';
-import 'dart:math';
-
-import 'package:animate_do/animate_do.dart';
 import 'package:budgeting_app/core/extensions/sizedbox_extension.dart';
 import 'package:budgeting_app/core/functions/general.dart';
-import 'package:budgeting_app/core/functions/get_widget_location.dart';
-import 'package:budgeting_app/core/functions/media_query.dart';
 import 'package:budgeting_app/core/utils/assets/assets_path.dart';
 import 'package:budgeting_app/core/utils/colors/app_light_colors.dart';
 import 'package:budgeting_app/core/utils/durations/animation_duration.dart';
 import 'package:budgeting_app/core/utils/enums.dart';
 import 'package:budgeting_app/core/utils/sizes/app_sizes.dart';
 import 'package:budgeting_app/core/utils/sizes/borders.dart';
-import 'package:budgeting_app/core/utils/sizes/elevations.dart';
 import 'package:budgeting_app/core/utils/sizes/font_sizes.dart';
-import 'package:budgeting_app/core/utils/sizes/media_query_sizes.dart';
 import 'package:budgeting_app/core/utils/sizes/padding.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
 import 'package:budgeting_app/core/widgets/circular_progress_indicator.dart';
-import 'package:budgeting_app/home/data/models/expense_model.dart';
-import 'package:budgeting_app/home/domain/entities/expense_entity.dart';
 import 'package:budgeting_app/home/presentation/components/add_expense_modal_sheet.dart';
 import 'package:budgeting_app/home/presentation/components/add_folder_modal_sheet.dart';
-import 'package:budgeting_app/home/presentation/components/custom_floating_action_button.dart';
 import 'package:budgeting_app/home/presentation/components/employee/expenses_list.dart';
 import 'package:budgeting_app/home/presentation/components/employee/folders_list.dart';
 import 'package:budgeting_app/home/presentation/components/tabBar.dart';
@@ -177,123 +166,130 @@ class _EmployeePlanComponentState extends State<EmployeePlanComponent>
                   left: AppPaddings.p8,
                   right: AppPaddings.p8,
                 ),
-                child: TabBarView(controller: _tabController, children: [
-                  Consumer<EmployeeProvider>(
-                    builder: (context, value, child) => value
-                            .getGettingExpensesState
-                        ? const CustomProgressIndicator()
-                        : Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: AppPaddings.p8),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {
-                                            if (_pageController.page != 0) {
-                                              _pageController.previousPage(
-                                                  duration: const Duration(
-                                                      milliseconds:
-                                                          AnimationDuration
-                                                              .pageViewDuration),
-                                                  curve: Curves.linear);
-                                              value.changeFileVisibilty();
-                                            }
-                                            showAddExpenseModalSheet(
-                                                context: context,
-                                                currencyType: value
-                                                    .getEmployeePlanModel
-                                                    .currencyType,
-                                                planType: PlanType.employee);
-                                          },
-                                          child:
-                                              const Text(AppStrings.addExpense),
-                                        ),
-                                        const SizedBox(
-                                          height: AppSizes.spaceSize20,
-                                          child: VerticalDivider(
-                                            color: AppLightColors
-                                                .verticalDividerColorForWhiteBackground,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    //Expenses
+                    Consumer<EmployeeProvider>(
+                      builder: (context, value, child) => value
+                              .getGettingExpensesState
+                          ? const CustomProgressIndicator()
+                          : Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: AppPaddings.p8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              if (_pageController.page != 0) {
+                                                _pageController.previousPage(
+                                                    duration: const Duration(
+                                                        milliseconds:
+                                                            AnimationDuration
+                                                                .pageViewDuration),
+                                                    curve: Curves.linear);
+                                                value.changeFileVisibilty();
+                                              }
+                                              showAddExpenseModalSheet(
+                                                  context: context,
+                                                  currencyType: value
+                                                      .getEmployeePlanModel
+                                                      .currencyType,
+                                                  planType: PlanType.employee);
+                                            },
+                                            child: const Text(
+                                                AppStrings.addExpense),
                                           ),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            if (_pageController.page == 0) {
-                                              _pageController.nextPage(
-                                                  duration: const Duration(
-                                                      milliseconds:
-                                                          AnimationDuration
-                                                              .pageViewDuration),
-                                                  curve: Curves.linear);
-                                              value.changeFileVisibilty();
-                                            }
-                                            showFolderModalSheet(
-                                                context: context,
-                                                planType: PlanType.employee);
-                                          },
-                                          child: Text(
-                                            AppStrings.addFolder,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelLarge!
-                                                .copyWith(
-                                                    color: AppLightColors
-                                                        .blueColor,
-                                                    fontSize: FontSizes
-                                                        .buttonFontSize),
+                                          const SizedBox(
+                                            height: AppSizes.spaceSize20,
+                                            child: VerticalDivider(
+                                              color: AppLightColors
+                                                  .verticalDividerColorForWhiteBackground,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Consumer<EmployeeProvider>(
-                                      builder: (context, value, child) =>
-                                          InkWell(
-                                        onTap: () {
-                                          value.triggerFileVisibility(
-                                              pageController: _pageController);
-                                        },
-                                        child: Icon(
-                                          value.getFileVisibility
-                                              ? Icons.menu
-                                              : Icons.folder_rounded,
-                                          color: value.getFileVisibility
-                                              ? AppLightColors.primaryLightColor
-                                              : AppLightColors.blueColor,
+                                          TextButton(
+                                            onPressed: () {
+                                              if (_pageController.page == 0) {
+                                                _pageController.nextPage(
+                                                    duration: const Duration(
+                                                        milliseconds:
+                                                            AnimationDuration
+                                                                .pageViewDuration),
+                                                    curve: Curves.linear);
+                                                value.changeFileVisibilty();
+                                              }
+                                              showFolderModalSheet(
+                                                  context: context,
+                                                  planType: PlanType.employee);
+                                            },
+                                            child: Text(
+                                              AppStrings.addFolder,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelLarge!
+                                                  .copyWith(
+                                                      color: AppLightColors
+                                                          .blueColor,
+                                                      fontSize: FontSizes
+                                                          .buttonFontSize),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Consumer<EmployeeProvider>(
+                                        builder: (context, value, child) =>
+                                            InkWell(
+                                          onTap: () {
+                                            value.triggerFileVisibility(
+                                                pageController:
+                                                    _pageController);
+                                          },
+                                          child: Icon(
+                                            value.getFileVisibility
+                                                ? Icons.menu
+                                                : Icons.folder_rounded,
+                                            color: value.getFileVisibility
+                                                ? AppLightColors
+                                                    .primaryLightColor
+                                                : AppLightColors.blueColor,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                child: PageView(
-                                  controller: _pageController,
-                                  children: [
-                                    ExpensesList(
-                                        planType: PlanType.employee,
-                                        scrollController:
-                                            _expensesScrollController),
-                                    FoldersList(
-                                        planType: PlanType.employee,
-                                        scrollController:
-                                            _foldersScrollController),
-                                  ],
+                                Expanded(
+                                  child: PageView(
+                                    controller: _pageController,
+                                    children: [
+                                      ExpensesList(
+                                          planType: PlanType.employee,
+                                          scrollController:
+                                              _expensesScrollController),
+                                      FoldersList(
+                                          planType: PlanType.employee,
+                                          scrollController:
+                                              _foldersScrollController),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                  ),
-                  Column(
-                    children: const [],
-                  )
-                ]),
+                              ],
+                            ),
+                    ),
+                    //Incomes
+                    const Column(
+                      children: [],
+                    )
+                  ],
+                ),
               ),
             ),
             // if (getMediaQueryInstance(context: context).orientation ==

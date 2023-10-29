@@ -1,6 +1,5 @@
 import 'package:budgeting_app/core/base_usecase.dart';
 import 'package:budgeting_app/core/error/failure.dart';
-import 'package:budgeting_app/home/data/models/expense_model.dart';
 import 'package:budgeting_app/home/domain/entities/expense_entity.dart';
 import 'package:budgeting_app/home/domain/repository/base_home_repository.dart';
 import 'package:dartz/dartz.dart';

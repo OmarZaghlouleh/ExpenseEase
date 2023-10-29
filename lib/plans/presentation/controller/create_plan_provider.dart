@@ -96,7 +96,7 @@ class CreatePlanProvider extends ChangeNotifier {
       }
     } else {
       pageController.nextPage(
-        duration: Duration(milliseconds: AnimationDuration.d300),
+        duration: const Duration(milliseconds: AnimationDuration.d300),
         curve: Curves.linear,
       );
     }
@@ -105,8 +105,7 @@ class CreatePlanProvider extends ChangeNotifier {
   bool canMove(int page) {
     switch (page) {
       case 0:
-        if (_planType != null) return true;
-        return false;
+        return _planType != null;
       default:
         return false;
     }

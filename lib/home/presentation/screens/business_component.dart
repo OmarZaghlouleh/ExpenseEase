@@ -105,8 +105,8 @@ class _BusinessPlanComponentState extends State<BusinessPlanComponent>
                   ),
                 ).toList(),
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   Text("sdasd"),
                 ],
               )

@@ -12,6 +12,7 @@ import 'package:budgeting_app/core/utils/sizes/app_sizes.dart';
 import 'package:budgeting_app/core/utils/strings/app_strings.dart';
 import 'package:budgeting_app/core/utils/values/app_values.dart';
 import 'package:budgeting_app/core/widgets/nothing_widget.dart';
+import 'package:budgeting_app/plans/presentation/components/Create%20plan%20components/intro_body_component.dart';
 import 'package:budgeting_app/plans/presentation/controller/intro_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -60,7 +61,7 @@ class _IntroScreenState extends State<IntroScreen>
           title: Consumer<IntroProvider>(
             builder: (context, value, child) => AnimatedOpacity(
               opacity: value.getAppbarTitleVisibilty ? 1 : 0,
-              duration: Duration(milliseconds: AnimationDuration.d1000),
+              duration: const Duration(milliseconds: AnimationDuration.d1000),
               child: Text(
                 AppStrings.appName,
                 style: Theme.of(context).textTheme.displayMedium,
@@ -85,7 +86,8 @@ class _IntroScreenState extends State<IntroScreen>
                   child: PageView(
                     controller: _pageController,
                     children: [
-                      _getIntroBody(
+                      //Intro 1
+                      IntroBodyComponent(
                           imagePath: ImageAssets.intro1Image,
                           texts: [
                             TypewriterAnimatedText(
@@ -101,7 +103,8 @@ class _IntroScreenState extends State<IntroScreen>
                             ),
                           ],
                           context: context),
-                      _getIntroBody(
+                      //Intro 2
+                      IntroBodyComponent(
                           imagePath: ImageAssets.intro2Image,
                           texts: [
                             TypewriterAnimatedText(
@@ -109,7 +112,8 @@ class _IntroScreenState extends State<IntroScreen>
                             ),
                           ],
                           context: context),
-                      _getIntroBody(
+                      //Intro 3
+                      IntroBodyComponent(
                           imagePath: ImageAssets.intro3Image,
                           texts: [
                             TypewriterAnimatedText(
@@ -117,7 +121,8 @@ class _IntroScreenState extends State<IntroScreen>
                             ),
                           ],
                           context: context),
-                      _getIntroBody(
+                      //Intro 4
+                      IntroBodyComponent(
                           imagePath: ImageAssets.intro4Image,
                           texts: [
                             TypewriterAnimatedText(
@@ -130,22 +135,23 @@ class _IntroScreenState extends State<IntroScreen>
                 ),
               ),
               Consumer<IntroProvider>(
-                builder: (context, value, child) =>
-                    value.getCurrentPage == 3 || value.getLastPage == 3
-                        ? JelloIn(
-                            child: ElevatedButton(
-                                onPressed: () async {
-                                  await Provider.of<IntroProvider>(context,
-                                          listen: false)
-                                      .setIntroStatus(true);
-                                  navigate();
-                                },
-                                child: const Text(
-                                  AppStrings.gettingStarted,
-                                )),
-                          )
-                        : emptyWidget(),
+                builder: (context, value, child) => value.getCurrentPage == 3 ||
+                        value.getLastPage == 3
+                    ? JelloIn(
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Provider.of<IntroProvider>(context, listen: false)
+                                .setIntroStatus(true);
+                            navigate();
+                          },
+                          child: const Text(
+                            AppStrings.gettingStarted,
+                          ),
+                        ),
+                      )
+                    : emptyWidget(),
               ),
+              //Intro Index Widget
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -159,8 +165,8 @@ class _IntroScreenState extends State<IntroScreen>
                       child: Consumer<IntroProvider>(
                         builder: (context, value, child) {
                           return AnimatedContainer(
-                            duration:
-                                Duration(milliseconds: AnimationDuration.d200),
+                            duration: const Duration(
+                                milliseconds: AnimationDuration.d200),
                             width: value.getCurrentPage == index
                                 ? AppSizes.spaceSize25
                                 : AppSizes.spaceSize10,
@@ -180,9 +186,11 @@ class _IntroScreenState extends State<IntroScreen>
                   ),
                 ),
               ),
+              //Skip Swipe Up
               Consumer<IntroProvider>(
                 builder: (context, value, child) => AnimatedOpacity(
-                  duration: Duration(milliseconds: AnimationDuration.d300),
+                  duration:
+                      const Duration(milliseconds: AnimationDuration.d300),
                   opacity: value.getLastPage == 3 ? 0 : 1,
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: AppPaddings.p15),
@@ -212,94 +220,6 @@ class _IntroScreenState extends State<IntroScreen>
           ),
         ),
       ),
-    );
-  }
-
-  Widget _getIntroBody(
-      {required String imagePath,
-      required List<AnimatedText> texts,
-      required BuildContext context}) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: getMediaQueryInstance(context: context).size.height *
-                  MediaQuerySizes.mq05,
-              left: getMediaQueryInstance(context: context).size.width *
-                  MediaQuerySizes.mq03,
-            ),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (texts.length > 1)
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            DefaultTextStyle(
-                              style: Theme.of(context).textTheme.displaySmall!,
-                              child: AnimatedTextKit(
-                                onFinished: () {
-                                  Provider.of<IntroProvider>(context,
-                                          listen: false)
-                                      .setAppbarTitleVisiblity(false);
-                                },
-                                isRepeatingAnimation: false,
-                                animatedTexts: [texts.first],
-                              ),
-                            ),
-                            DefaultTextStyle(
-                              style: Theme.of(context).textTheme.displaySmall!,
-                              child: AnimatedTextKit(
-                                onFinished: () {
-                                  Provider.of<IntroProvider>(context,
-                                          listen: false)
-                                      .setAppbarTitleVisiblity(false);
-                                },
-                                isRepeatingAnimation: false,
-                                animatedTexts: [texts[1]],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    const SizedBox(height: AppSizes.spaceSize10),
-                    Expanded(
-                      child: DefaultTextStyle(
-                        style: Theme.of(context).textTheme.displaySmall!,
-                        child: AnimatedTextKit(
-                          onFinished: () {
-                            if (texts.length == 1) {
-                              Provider.of<IntroProvider>(context, listen: false)
-                                  .setAppbarTitleVisiblity(true);
-                            } else {
-                              Provider.of<IntroProvider>(context, listen: false)
-                                  .setAppbarTitleVisiblity(false);
-                            }
-                          },
-                          isRepeatingAnimation: false,
-                          animatedTexts: [texts.last],
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Image(
-            filterQuality: FilterQuality.high,
-            fit: BoxFit.fitWidth,
-            image: AssetImage(imagePath),
-          ),
-        ),
-      ],
     );
   }
 }

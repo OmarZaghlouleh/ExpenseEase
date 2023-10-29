@@ -11,13 +11,14 @@ void showErrorDialog({required BuildContext context, required String message}) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
+      scrollable: true,
       backgroundColor: Colors.transparent,
       elevation: AppSizes.spaceSize0,
       content: Container(
-        width: getMediaQueryInstance(context: context).size.width *
-            MediaQuerySizes.mq5,
-        height: getMediaQueryInstance(context: context).size.height *
-            MediaQuerySizes.mq10,
+        // width: getMediaQueryInstance(context: context).size.width *
+        //     MediaQuerySizes.mq5,
+        // height: getMediaQueryInstance(context: context).size.height *
+        //     MediaQuerySizes.mq25,
         decoration: BoxDecoration(
           color: AppLightColors.dialogBackgroundColor,
           borderRadius: BorderRadius.circular(AppSizes.spaceSize15),
@@ -30,20 +31,19 @@ void showErrorDialog({required BuildContext context, required String message}) {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                flex: 2,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: LottieBuilder.asset(
                   LottieAssets.error,
                 ),
               ),
               //AppSizes.spaceSize5.wh(),
-              Expanded(
-                flex: 1,
-                child: FittedBox(
-                  child: Text(
-                    message,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
             ],

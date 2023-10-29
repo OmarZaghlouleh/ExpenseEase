@@ -45,4 +45,15 @@ abstract class BaseHomeRepository {
       required double newValue,
       required String oldName,
       required String planName});
+
+  Future<Either<Failure, void>> deleteFolder({
+    required String planName,
+    required String folderName,
+  });
+  Future<Either<Failure, ExpensesFolderEntity>> editFolder({
+    required String planName,
+    required String oldName,
+    required String newName,
+    required List<ExpenseModel> expenses,
+  });
 }

@@ -4,17 +4,19 @@ import 'package:budgeting_app/home/data/data_source/local_data_source.dart';
 import 'package:budgeting_app/home/data/models/expense_model.dart';
 import 'package:budgeting_app/home/data/models/folder_model.dart';
 import 'package:budgeting_app/home/domain/entities/expenses_folder_entity.dart';
-import 'package:budgeting_app/home/domain/entities/expense_entity.dart';
 import 'package:budgeting_app/home/domain/repository/base_home_repository.dart';
 import 'package:budgeting_app/home/domain/usecases/add_expense_to_folder.dart';
 import 'package:budgeting_app/home/domain/usecases/add_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/add_to_expense_usecase.dart';
-import 'package:budgeting_app/home/domain/usecases/delete_expense_from_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/delete_expense_usecase.dart';
+import 'package:budgeting_app/home/domain/usecases/delete_folder_usecase.dart';
 import 'package:budgeting_app/home/domain/usecases/edit_expense_usecase.dart';
-import 'package:dartz/dartz.dart';
-import 'package:budgeting_app/plans/data/models/employee_plan_model.dart';
+import 'package:budgeting_app/home/domain/usecases/edit_folder_usecase.dart';
 import 'package:budgeting_app/plans/data/models/business_plan_model.dart';
+import 'package:budgeting_app/plans/data/models/employee_plan_model.dart';
+import 'package:dartz/dartz.dart';
+
+import '../../domain/usecases/delete_expense_from_folder_usecase.dart';
 
 class HomeRepository implements BaseHomeRepository {
   BaseHomeLocalDataSource baseHomeLocalDataSource;
@@ -165,6 +167,38 @@ class HomeRepository implements BaseHomeRepository {
               oldName: oldName,
               planName: planName));
       return Right(expenseModel);
+    } on LocalException catch (e) {
+      return Left(LocalFailure(message: e.errorModel.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteFolder(
+      {required String planName, required String folderName}) async {
+    try {
+      await baseHomeLocalDataSource.deleteFolder(
+          deleteFolderUsecaseParameters: DeleteFolderUsecaseParameters(
+              planName: planName, folderName: folderName));
+      return const Right(null);
+    } on LocalException catch (e) {
+      return Left(LocalFailure(message: e.errorModel.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ExpensesFolderEntity>> editFolder(
+      {required String planName,
+      required String oldName,
+      required List<ExpenseModel> expenses,
+      required String newName}) async {
+    try {
+      final result = await baseHomeLocalDataSource.editFolder(
+          editFolderUsecaseParameters: EditFolderUsecaseParameters(
+              expenses: expenses,
+              planName: planName,
+              newName: newName,
+              oldName: oldName));
+      return Right(result);
     } on LocalException catch (e) {
       return Left(LocalFailure(message: e.errorModel.message));
     }

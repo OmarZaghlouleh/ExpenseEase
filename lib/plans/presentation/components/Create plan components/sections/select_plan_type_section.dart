@@ -30,6 +30,7 @@ class SelectPlanTypeSection extends StatelessWidget {
         Consumer<CreatePlanProvider>(
           builder: (context, value, child) => Row(
             children: [
+              //Employee Plan
               Expanded(
                 flex: 1,
                 child: Padding(
@@ -40,12 +41,12 @@ class SelectPlanTypeSection extends StatelessWidget {
                       title: AppStrings.employeePlan,
                       description: AppStrings.employeePlanDescription,
                       iconAsset: IconAssets.employee,
-                      isSelected:
-                          value.getPlanType == PlanType.employee ? true : false,
+                      isSelected: value.getPlanType == PlanType.employee,
                     ),
                   ),
                 ),
               ),
+              //Business Plan
               Expanded(
                 flex: 1,
                 child: Padding(
@@ -56,8 +57,7 @@ class SelectPlanTypeSection extends StatelessWidget {
                       title: AppStrings.businessPlan,
                       description: AppStrings.businessPlanDescription,
                       iconAsset: IconAssets.business,
-                      isSelected:
-                          value.getPlanType == PlanType.business ? true : false,
+                      isSelected: value.getPlanType == PlanType.business,
                     ),
                   ),
                 ),

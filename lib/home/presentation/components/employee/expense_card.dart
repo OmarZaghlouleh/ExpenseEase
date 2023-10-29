@@ -39,107 +39,108 @@ class ExpenseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Slidable(
       startActionPane: ActionPane(
-          motion: PopupMenuButton(
-            icon: const Icon(Icons.settings_rounded),
-            color: AppLightColors.accentColor.withOpacity(AppOpacity.op08),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(AppRadius.r15),
-                bottomLeft: Radius.circular(AppRadius.r15),
-                bottomRight: Radius.circular(AppRadius.r15),
+        motion: PopupMenuButton(
+          icon: const Icon(Icons.settings_rounded),
+          color: AppLightColors.accentColor.withOpacity(AppOpacity.op08),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(AppRadius.r15),
+              bottomLeft: Radius.circular(AppRadius.r15),
+              bottomRight: Radius.circular(AppRadius.r15),
+            ),
+          ),
+          shadowColor: AppLightColors.primaryLightColor,
+          elevation: AppElevation.e5,
+          itemBuilder: (context) => [
+            //Edit
+            const PopupMenuItem(
+              value: AppConstants.edit,
+              child: CustomPopUpMenuItem(
+                  title: AppStrings.edit, iconData: Icons.edit),
+            ),
+
+            //Add to folder
+            const PopupMenuItem(
+              value: AppConstants.addTofolder,
+              child: CustomPopUpMenuItem(
+                  title: AppStrings.addToFolder,
+                  iconData: Icons.create_new_folder_rounded),
+            ),
+            if (inFolder)
+              //Remove from folder
+              const PopupMenuItem(
+                value: AppConstants.removeFromFolder,
+                child: CustomPopUpMenuItem(
+                  title: AppStrings.removeFromFolder,
+                  iconData: Icons.delete_rounded,
+                  //rowColor: AppLightColors.deleteColor,
+                ),
+              ),
+            //Delete
+            const PopupMenuItem(
+              value: AppConstants.delete,
+              child: CustomPopUpMenuItem(
+                title: AppStrings.delete,
+                iconData: Icons.delete_rounded,
+                rowColor: AppLightColors.deleteColor,
               ),
             ),
-            shadowColor: AppLightColors.primaryLightColor,
-            elevation: AppElevation.e5,
-            itemBuilder: (context) => [
-              //Edit
-              const PopupMenuItem(
-                value: AppConstants.edit,
-                child: CustomPopUpMenuItem(
-                    title: AppStrings.edit, iconData: Icons.edit),
-              ),
+          ],
+          onSelected: (value) async {
+            switch (value) {
+              case AppConstants.edit:
+                showAddExpenseModalSheet(
+                    context: context,
+                    currencyType:
+                        Provider.of<EmployeeProvider>(context, listen: false)
+                            .getEmployeePlanModel
+                            .currencyType,
+                    edit: true,
+                    oldName: expense.name,
+                    oldValue: expense.paid.toString(),
+                    planType: planType);
+                break;
+              case AppConstants.addTofolder:
+                Provider.of<EmployeeProvider>(context, listen: false)
+                    .clearFoldersToAddTo();
+                showFoldersListDialog(
+                    context: context,
+                    expense: expense,
+                    function: () async {
+                      await Provider.of<EmployeeProvider>(context,
+                              listen: false)
+                          .addExpenseToFolder(
+                              expenseModel: ExpenseModel(
+                                  name: expense.name, paid: expense.paid),
+                              context: context)
+                          .then((value) {});
+                    });
 
-              //Add to folder
-              const PopupMenuItem(
-                value: AppConstants.addTofolder,
-                child: CustomPopUpMenuItem(
-                    title: AppStrings.addToFolder,
-                    iconData: Icons.create_new_folder_rounded),
-              ),
-              if (inFolder)
-                //Remove from folder
-                const PopupMenuItem(
-                  value: AppConstants.removeFromFolder,
-                  child: CustomPopUpMenuItem(
-                    title: AppStrings.removeFromFolder,
-                    iconData: Icons.delete_rounded,
-                    //rowColor: AppLightColors.deleteColor,
-                  ),
-                ),
-              //Delete
-              const PopupMenuItem(
-                value: AppConstants.delete,
-                child: CustomPopUpMenuItem(
-                  title: AppStrings.delete,
-                  iconData: Icons.delete_rounded,
-                  rowColor: AppLightColors.deleteColor,
-                ),
-              ),
-            ],
-            onSelected: (value) async {
-              switch (value) {
-                case AppConstants.edit:
-                  showAddExpenseModalSheet(
-                      context: context,
-                      currencyType:
-                          Provider.of<EmployeeProvider>(context, listen: false)
-                              .getEmployeePlanModel
-                              .currencyType,
-                      edit: true,
-                      oldName: expense.name,
-                      oldValue: expense.paid.toString(),
-                      planType: planType);
-                  break;
-                case AppConstants.addTofolder:
-                  Provider.of<EmployeeProvider>(context, listen: false)
-                      .clearFoldersToAddTo();
-                  showFoldersListDialog(
-                      context: context,
-                      expense: expense,
-                      function: () async {
-                        await Provider.of<EmployeeProvider>(context,
-                                listen: false)
-                            .addExpenseToFolder(
-                                expenseModel: ExpenseModel(
-                                    name: expense.name, paid: expense.paid),
-                                context: context)
-                            .then((value) {});
-                      });
-
-                  break;
-                case AppConstants.removeFromFolder:
-                  await Provider.of<EmployeeProvider>(context, listen: false)
-                      .removeExpenseFromFolder(
-                          expenseName: expense.name,
-                          folderName: folderName,
-                          context: context);
-                  break;
-                case AppConstants.delete:
-                  showDeleteDialog(
-                      context: context,
-                      title: AppStrings.areYouSureToDeleteIncludeFolders,
-                      function: () async {
-                        await Provider.of<EmployeeProvider>(context,
-                                listen: false)
-                            .deleteExpense(
-                                expenseName: expense.name, context: context);
-                      });
-                  break;
-                default:
-              }
-            },
-          ),
-          children: const []),
+                break;
+              case AppConstants.removeFromFolder:
+                await Provider.of<EmployeeProvider>(context, listen: false)
+                    .removeExpenseFromFolder(
+                        expenseName: expense.name,
+                        folderName: folderName,
+                        context: context);
+                break;
+              case AppConstants.delete:
+                showDeleteDialog(
+                    context: context,
+                    title: AppStrings.areYouSureToDeleteIncludeFolders,
+                    function: () async {
+                      await Provider.of<EmployeeProvider>(context,
+                              listen: false)
+                          .deleteExpense(
+                              expenseName: expense.name, context: context);
+                    });
+                break;
+              default:
+            }
+          },
+        ),
+        children: const [],
+      ),
       child: SizedBox(
         child: Card(
           shadowColor: AppLightColors.primaryLightColor,

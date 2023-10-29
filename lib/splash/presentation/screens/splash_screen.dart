@@ -19,30 +19,30 @@ class SplashScreen extends StatelessWidget {
           color: AppLightColors.primaryLightColor,
         ),
         child: Center(
-            child: AnimatedTextKit(
-          repeatForever: false,
-          totalRepeatCount: 1,
-          onFinished: () {
-            var settings = Hive.box(AppConstants.appDataBox);
+          child: AnimatedTextKit(
+            repeatForever: false,
+            totalRepeatCount: 1,
+            onFinished: () {
+              var settings = Hive.box(AppConstants.appDataBox);
 
-            if (settings.get(AppConstants.isPlanCreated) != null &&
-                settings.get(AppConstants.isPlanCreated)) {
-              Navigator.pushReplacementNamed(context, Routes.homeScreen);
-            } else if (settings.get(AppConstants.isIntroskipped) != null &&
-                settings.get(AppConstants.isIntroskipped)) {
-              Navigator.pushReplacementNamed(context, Routes.createPlanScreen);
-            } else {
-              Navigator.pushReplacementNamed(context, Routes.introScreen);
-            }
-          },
-          animatedTexts: [
-            ColorizeAnimatedText(
-              AppStrings.appName,
-              textStyle: Theme.of(context).textTheme.headlineLarge!,
-              colors: AppLightColors.splashColors,
-            )
-          ],
-        )),
+              if (settings.get(AppConstants.isPlanCreated) == true) {
+                Navigator.pushReplacementNamed(context, Routes.homeScreen);
+              } else if (settings.get(AppConstants.isIntroskipped) == true) {
+                Navigator.pushReplacementNamed(
+                    context, Routes.createPlanScreen);
+              } else {
+                Navigator.pushReplacementNamed(context, Routes.introScreen);
+              }
+            },
+            animatedTexts: [
+              ColorizeAnimatedText(
+                AppStrings.appName,
+                textStyle: Theme.of(context).textTheme.headlineLarge!,
+                colors: AppLightColors.splashColors,
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

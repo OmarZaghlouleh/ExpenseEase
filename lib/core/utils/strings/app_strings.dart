@@ -31,6 +31,8 @@ class AppStrings {
       "Error while Adding expense, please try again";
   static const String editExpenseErrorMessage =
       "Error while editing expense, please try again";
+  static const String editFolderError =
+      "Error while editing folder, please try again";
   static const String addFolderErrorMessage =
       "Error while Adding folder, please try again";
   static const String intro1 = "you can easily track your income and expenses.";
@@ -42,6 +44,8 @@ class AppStrings {
       "Whether you're saving up for a down payment on a house, paying off debt, or just looking to take control of your money, ExpenseEase has everything you need to succeed. Start your journey to financial freedom today!";
   static const String deleteExpenseError =
       "Something went wrong while deleting expense";
+  static const String deleteFolderError =
+      "Something went wrong while deleting folder";
   static const String swipeUpToSkip = "Swipe up to skip";
   static const String gettingStarted = "Getting started";
   static const String selectYourPlan = "Select your plan";
